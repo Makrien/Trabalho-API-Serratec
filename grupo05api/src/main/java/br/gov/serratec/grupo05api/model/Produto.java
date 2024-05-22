@@ -23,7 +23,7 @@ public class Produto {
 	private Long qtdEstoque;
 	private LocalDate dataCadastro;
 	private Double valorUnitario;
-	private String imagem;
+	private byte[] imagem;
 	
 	@ManyToOne
 	private Categoria categoria;
@@ -37,7 +37,7 @@ public class Produto {
 	}
 
 	public Produto(Long id, String nome, String descricao, Long qtdEstoque, LocalDate dataCadastro,
-			Double valorUnitario, String imagem, Categoria categoria) {
+			Double valorUnitario, byte[] imagem, Categoria categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -97,12 +97,22 @@ public class Produto {
 		this.valorUnitario = valorUnitario;
 	}
 
-	public String getImagem() {
+	
+
+	public byte[] getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(String imagem) {
+	public void setImagem(byte[] imagem) {
 		this.imagem = imagem;
+	}
+
+	public List<ItemPedido> getItemPedido() {
+		return itemPedido;
+	}
+
+	public void setItemPedido(List<ItemPedido> itemPedido) {
+		this.itemPedido = itemPedido;
 	}
 
 	public Categoria getCategoria() {
