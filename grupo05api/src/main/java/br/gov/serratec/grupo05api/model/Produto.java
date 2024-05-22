@@ -1,12 +1,14 @@
 package br.gov.serratec.grupo05api.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,7 +28,8 @@ public class Produto {
 	@ManyToOne
 	private Categoria categoria;
 	
-	
+	@OneToMany(mappedBy = "produto")
+	List<ItemPedido> itemPedido;
 	
 
 	public Produto() {
