@@ -16,18 +16,30 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    
     public List<ClienteDto> buscarTodos() {
-        return clienteRepository.findAll().stream().map(Cliente::toDto).toList();
+    	return clienteRepository.findAll().stream()
+    			.map(c -> new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(),
+    					c.getTelefone(),c.getDataNascimento().toString(), c.getEndereco()))
+    					.toList();
     }
 
     public ClienteDto buscarPorId(Long id) {
-        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
-        return clienteOptional.map(Cliente::toDto).orElse(null);
+    	
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id); 
+        if(clienteOptional.isPresent()) {
+        	Cliente c = clienteOptional.get();
+        	ClienteDto clienteDto = new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(),
+					c.getTelefone(),c.getDataNascimento().toString(), c.getEndereco());
+        	return clienteDto;
+        }
+        
+        return null;
     }
 
     public ClienteDto criar(ClienteDto clienteDto) {
         Cliente cliente = clienteDto.toEntity();
-        return Cliente.toDto(clienteRepository.save(cliente));
+        return cliente.toDto(clienteRepository.save(cliente));
     }
 
     public ClienteDto atualizar(Long id, ClienteDto clienteDto) {
@@ -35,7 +47,7 @@ public class ClienteService {
         if (clienteOptional.isPresent()) {
             Cliente cliente = clienteDto.toEntity();
             cliente.setId(id);
-            return Cliente.toDto(clienteRepository.save(cliente));
+            return cliente.toDto(clienteRepository.save(cliente));
         }
         return null;
     }

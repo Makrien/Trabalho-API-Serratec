@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.serratec.grupo05api.dto.ClienteDto;
 import jakarta.persistence.Entity;
@@ -130,9 +129,8 @@ public class Cliente {
 	}
 
 
-	public static ClienteDto toDto(Cliente clienteEntity) {
-	        ObjectMapper mapper = new ObjectMapper();
-	        return mapper.convertValue(clienteEntity, ClienteDto.class);
-	    }
-
+	public ClienteDto toDto(Cliente cliente) {
+		return new ClienteDto(cliente.id, cliente.email, cliente.nomeCompleto,
+				cliente.cpf, cliente.telefone, cliente.dataNascimento.toString(), cliente.endereco);
+	}
 }
