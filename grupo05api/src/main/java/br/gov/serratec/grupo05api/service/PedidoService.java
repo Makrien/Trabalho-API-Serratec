@@ -1,6 +1,7 @@
 package br.gov.serratec.grupo05api.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,16 @@ public class PedidoService {
 	public PedidoDto cadastrar(@Valid PedidoDto novoPedido) {
 		Pedido pedidoEntity = repositorio.save(novoPedido.toEntity());
 		return PedidoDto.toDto(pedidoEntity);
+	}
+
+	public Optional<PedidoDto> atualizar(Long id, @Valid PedidoDto pedido) {
+		if (repositorio.existsById(id)) {
+			Pedido pedidoEntity = pedido.toEntity();
+			pedidoEntity.setId(id);
+			repositorio.save(pedidoEntity);
+			return Optional.of(PedidoDto.toDto(pedidoEntity));
+		}
+		return Optional.empty();
 	}
 	
 	

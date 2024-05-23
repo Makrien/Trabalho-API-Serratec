@@ -1,6 +1,7 @@
 package br.gov.serratec.grupo05api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,10 +52,15 @@ public class PedidoController {
 	}
 	
 	//TODO
-//	@PutMapping("/{id}")
-//	public ResponseEntity<PedidoDto> atualizar(@PathVariable Long id) {
-//		return null;
-//	}
+	@PutMapping("/{id}")
+	public ResponseEntity<PedidoDto> atualizar(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido) {
+		Optional<PedidoDto> pedidoDto = servico.atualizar(id, pedido);
+		
+		if (pedidoDto.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(pedidoDto.get());
+	}
 	
 	//TODO
 //	@DeleteMapping("/{id}")
