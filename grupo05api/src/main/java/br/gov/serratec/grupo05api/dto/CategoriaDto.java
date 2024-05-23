@@ -9,7 +9,8 @@ import br.gov.serratec.grupo05api.model.Categoria;
 public record CategoriaDto(
         Long id,
         String nome,
-        String descricao) {
+        String descricao,
+        List<ProdutoDto> produto) {
 
     public Categoria toEntity() {
         ObjectMapper mapper = new ObjectMapper();

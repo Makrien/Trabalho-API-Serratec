@@ -2,8 +2,7 @@ package br.gov.serratec.grupo05api.dto;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.stream.Collectors;
 
 import br.gov.serratec.grupo05api.model.Produto;
 
@@ -12,20 +11,41 @@ public record ProdutoDto(
         String nome,
         String descricao,
         Long qtdEstoque,
-        LocalDate dataCadastro,
+        String dataCadastro,
         Double valorUnitario,
-        byte[] imagem,
+        String imagem,
         CategoriaDto categoria,
         List<ItemPedidoDto> itemPedido) {
 	
 	public Produto toEntity() {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(this, Produto.class);
+		Produto produto = new Produto();
+        produto.setId(id);
+        produto.setNome(nome);
+        produto.setDescricao(descricao);
+        produto.setQtdEstoque(qtdEstoque);
+        produto.setDataCadastro(LocalDate.parse(this.dataCadastro));
+        produto.setValorUnitario(this.valorUnitario);
+        produto.setImagem(this.imagem);
+        produto.setCategoria(categoria.toEntity());
+        
+        return produto;
+        
     }
 
-    public static ProdutoDto toDto(Produto produtoEntity) {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(produtoEntity, ProdutoDto.class);
+	public static ProdutoDto toDto(Produto produtoEntity) {
+        return new ProdutoDto(
+                produtoEntity.getId(),
+                produtoEntity.getNome(),
+                produtoEntity.getDescricao(),
+                produtoEntity.getQtdEstoque(),
+                produtoEntity.getDataCadastro().toString(),
+                produtoEntity.getValorUnitario(),
+                produtoEntity.getImagem(),
+                CategoriaDto.toDto(produtoEntity.getCategoria()),
+                produtoEntity.getItemPedido().stream()
+                        .map(ItemPedidoDto::toDto)
+                        .collect(Collectors.toList())
+        );
     }
 
 }
