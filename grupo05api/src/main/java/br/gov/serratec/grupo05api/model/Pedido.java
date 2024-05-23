@@ -25,8 +25,8 @@ public class Pedido {
 	private LocalDate dataEnvio;
 	private String status;
 	private Double valorTotal;
-	
-	@ManyToOne 
+
+	@ManyToOne
 	private Cliente cliente;
 	
 	@ManyToMany
