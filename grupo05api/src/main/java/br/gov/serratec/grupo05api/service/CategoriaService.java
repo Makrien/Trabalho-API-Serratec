@@ -1,6 +1,7 @@
 package br.gov.serratec.grupo05api.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,27 @@ public class CategoriaService {
         Categoria categoria = categoriaDto.toEntity();
         Categoria novaCategoria = categoriaRepository.save(categoria);
         return CategoriaDto.toDto(novaCategoria);
+    }
+    
+    public CategoriaDto atualizarCategoria(Long id, CategoriaDto categoriaDto) {
+        Optional<Categoria> categoriaExistente = categoriaRepository.findById(id);
+        if (categoriaExistente.isPresent()) {
+            Categoria categoria = categoriaExistente.get();
+            categoria.setNome(categoriaDto.nome());
+            categoria.setDescricao(categoriaDto.descricao());
+            Categoria categoriaAtualizada = categoriaRepository.save(categoria);
+            return CategoriaDto.toDto(categoriaAtualizada);
+        } else {
+            return null;
+        }
+    }
+    
+    public Boolean deletarCategoria(Long id) {
+        if (categoriaRepository.existsById(id)) {
+            categoriaRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

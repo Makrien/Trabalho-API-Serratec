@@ -1,7 +1,9 @@
 package br.gov.serratec.grupo05api.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +47,32 @@ public class ProdutoService {
         Produto produto = produtoDto.toEntity();
         Produto novoProduto = produtoRepository.save(produto);
         return ProdutoDto.toDto(novoProduto);
+    }
+    
+    public ProdutoDto atualizarProduto(Long id, ProdutoDto produtoDto) {
+        Optional<Produto> produtoExistente = produtoRepository.findById(id);
+        if (produtoExistente.isPresent()) {
+            Produto produto = produtoExistente.get();
+            produto.setNome(produtoDto.nome());
+            produto.setDescricao(produtoDto.descricao());
+            produto.setQtdEstoque(produtoDto.qtdEstoque());
+            produto.setDataCadastro(LocalDate.parse(produtoDto.dataCadastro()));
+            produto.setValorUnitario(produtoDto.valorUnitario());
+            produto.setImagem(produtoDto.imagem());
+            produto.setCategoria(produtoDto.categoria().toEntity());
+            Produto produtoAtualizado = produtoRepository.save(produto);
+            return ProdutoDto.toDto(produtoAtualizado);
+        } else {
+            return null;
+        }
+    }
+    
+    public Boolean deletarProduto(Long id) {
+        if (produtoRepository.existsById(id)) {
+            produtoRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
