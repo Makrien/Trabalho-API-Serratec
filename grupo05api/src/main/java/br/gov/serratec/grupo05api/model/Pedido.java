@@ -25,8 +25,8 @@ public class Pedido {
 	private LocalDate dataEnvio;
 	private String status;
 	private Double valorTotal;
-	
-	@ManyToOne // verificar com o grupo, relação de pedido e cliente.
+
+	@ManyToOne
 	private Cliente cliente;
 	
 	@ManyToMany
