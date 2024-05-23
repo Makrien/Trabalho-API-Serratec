@@ -25,6 +25,12 @@ public class CategoriaService {
     }
 
     public CategoriaDto cadastrarCategoria(CategoriaDto categoriaDto) {
+    	Optional<Categoria> categoriaExistente = categoriaRepository
+    			.findByNomeContainingIgnoreCase(categoriaDto.nome()).stream().findFirst();
+        if (categoriaExistente.isPresent()) {
+            return null;
+        }
+
         Categoria categoria = categoriaDto.toEntity();
         Categoria novaCategoria = categoriaRepository.save(categoria);
         return CategoriaDto.toDto(novaCategoria);

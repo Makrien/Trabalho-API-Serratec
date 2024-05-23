@@ -42,10 +42,13 @@ public class CategoriaController {
     }
 	
 	@PostMapping
-	public ResponseEntity<CategoriaDto> cadastrarCategoria(@Valid @RequestBody CategoriaDto categoriaDto) {
+    public ResponseEntity<CategoriaDto> cadastrarCategoria(@Valid @RequestBody CategoriaDto categoriaDto) {
         CategoriaDto novaCategoria = categoriaService.cadastrarCategoria(categoriaDto);
+        if (novaCategoria == null) {
+            return ResponseEntity.status(409).build();
+        }
         return ResponseEntity.ok(novaCategoria);
-	}
+    }
 	
 	@PutMapping("/{id}")
     public ResponseEntity<CategoriaDto> atualizarCategoria(@PathVariable Long id, @Valid @RequestBody CategoriaDto categoriaDto) {
