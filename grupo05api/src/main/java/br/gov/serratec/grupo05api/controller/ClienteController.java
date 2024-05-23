@@ -1,6 +1,7 @@
 package br.gov.serratec.grupo05api.controller;
 
 import br.gov.serratec.grupo05api.dto.ClienteDto;
+import br.gov.serratec.grupo05api.repository.ClienteRepository;
 import br.gov.serratec.grupo05api.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+    
+    private ClienteRepository clienteRepository;
 
     @GetMapping
     public ResponseEntity<List<ClienteDto>> buscarTodosClientes() {
@@ -31,8 +34,11 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<ClienteDto> criarCliente(@RequestBody ClienteDto clienteDto) {
-        ClienteDto clienteCriado = clienteService.criar(clienteDto);
+    public ResponseEntity<?> criarCliente(@RequestBody ClienteDto clienteDto) {
+    	ClienteDto clienteCriado = clienteService.criar(clienteDto);
+    	if(clienteCriado == null) {
+    		return ResponseEntity.badRequest().body("Email ou cpf do cliente já cadastrados, verifique.");
+    	}
         return ResponseEntity.ok(clienteCriado);
     }
 
