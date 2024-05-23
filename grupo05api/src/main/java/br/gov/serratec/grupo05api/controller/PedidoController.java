@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 import br.gov.serratec.grupo05api.dto.PedidoDto;
-import br.gov.serratec.grupo05api.dto.RelatorioDto;
+//import br.gov.serratec.grupo05api.dto.RelatorioDto;
 import br.gov.serratec.grupo05api.service.PedidoService;
 
 @RestController
@@ -45,13 +45,13 @@ public class PedidoController {
 //		return null;
 //	}
 	
-	//TODO
+	//TODO: Check exceptions
 	@PostMapping
 	public ResponseEntity<PedidoDto> cadastrar(@RequestBody @Valid PedidoDto novoPedido) {
 		return new ResponseEntity<>(servico.cadastrar(novoPedido), HttpStatus.CREATED);
 	}
 	
-	//TODO
+	//TODO: Check exceptions
 	@PutMapping("/{id}")
 	public ResponseEntity<PedidoDto> atualizar(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido) {
 		Optional<PedidoDto> pedidoDto = servico.atualizar(id, pedido);
@@ -63,8 +63,11 @@ public class PedidoController {
 	}
 	
 	//TODO
-//	@DeleteMapping("/{id}")
-//	public ResponseEntity<Void> excluir(@PathVariable Long id) {
-//		return null;
-//	}
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluir(@PathVariable Long id) {
+		if (servico.excluir(id)) {
+			
+		}
+		return null;
+	}
 }
