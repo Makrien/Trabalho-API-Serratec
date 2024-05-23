@@ -1,8 +1,6 @@
 package br.gov.serratec.grupo05api.dto;
 
-import br.gov.serratec.grupo05api.model.Cliente;
 import br.gov.serratec.grupo05api.model.Endereco;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -21,13 +19,11 @@ public record EnderecoDto(
 		 @NotBlank(message = "Informe um complemento!")
 		 String complemento,
 		 @NotBlank(message = "Informe uma UF!")
-		 String uf,
-		 Cliente cliente
-		 ) {
+		 String uf) {
 
 	public Endereco toEntity() {
 		return new Endereco(this.id, this.cep, this.rua, this.bairro,
-				this.cidade, this.numero, this.complemento, this.uf, this.cliente);
+				this.cidade, this.numero, this.complemento, this.uf);
 	}
 
 	
