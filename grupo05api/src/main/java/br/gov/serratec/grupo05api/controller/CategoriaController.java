@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.serratec.grupo05api.dto.CategoriaDto;
@@ -29,6 +30,16 @@ public class CategoriaController {
 		List<CategoriaDto> categorias = categoriaService.obterTodos();
         return ResponseEntity.ok(categorias);
 	}
+	
+	@GetMapping("/{id}")
+    public ResponseEntity<CategoriaDto> obterPorId(@PathVariable Long id) {
+        CategoriaDto categoria = categoriaService.obterPorId(id);
+        if (categoria == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(categoria);
+        }
+    }
 	
 	@PostMapping
 	public ResponseEntity<CategoriaDto> cadastrarCategoria(@Valid @RequestBody CategoriaDto categoriaDto) {
@@ -53,6 +64,16 @@ public class CategoriaController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+	
+	@GetMapping("/buscar")
+    public ResponseEntity<List<CategoriaDto>> buscarPorNome(@RequestParam String nome) {
+        List<CategoriaDto> categorias = categoriaService.buscarPorNomeCategoria(nome);
+        if (categorias.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(categorias);
         }
     }
 }

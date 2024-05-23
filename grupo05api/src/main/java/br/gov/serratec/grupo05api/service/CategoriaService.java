@@ -51,4 +51,16 @@ public class CategoriaService {
             return false;
         }
     }
+    
+    public CategoriaDto obterPorId(Long id) {
+        Optional<Categoria> categoria = categoriaRepository.findById(id);
+        return categoria.map(CategoriaDto::toDto).orElse(null);
+    }
+    
+    public List<CategoriaDto> buscarPorNomeCategoria(String nome) {
+        List<Categoria> categorias = categoriaRepository.findByNomeContainingIgnoreCase(nome);
+        return categorias.stream()
+                         .map(CategoriaDto::toDto)
+                         .collect(Collectors.toList());
+    }
 }

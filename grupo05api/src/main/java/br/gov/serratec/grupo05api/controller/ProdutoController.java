@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.serratec.grupo05api.dto.ProdutoDto;
@@ -28,6 +29,26 @@ public class ProdutoController {
     public ResponseEntity<List<ProdutoDto>> obterTodos() {
         List<ProdutoDto> produtos = produtoService.obterTodos();
         return ResponseEntity.ok(produtos);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<ProdutoDto> obterPorId(@PathVariable Long id) {
+        ProdutoDto produto = produtoService.obterPorId(id);
+        if (produto == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(produto);
+        }
+    }
+    
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ProdutoDto>> buscarPorNomeProduto(@RequestParam String nome) {
+        List<ProdutoDto> produtos = produtoService.buscarPorNomeProduto(nome);
+        if (produtos.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(produtos);
+        }
     }
 
     @PostMapping
