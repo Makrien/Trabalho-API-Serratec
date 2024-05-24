@@ -27,7 +27,7 @@ public class Cliente {
 	private String cpf;
 	private String telefone;
 	@JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataNascimento;
+  private LocalDate dataNascimento;
 	@OneToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
