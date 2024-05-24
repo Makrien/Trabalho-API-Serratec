@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -28,6 +29,7 @@ public class Cliente {
 	@JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
 	@OneToOne
+	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 
 	@OneToMany(mappedBy = "cliente")

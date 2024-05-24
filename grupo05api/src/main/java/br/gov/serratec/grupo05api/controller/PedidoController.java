@@ -34,10 +34,14 @@ public class PedidoController {
 	}
 	
 	//TODO
-//	@GetMapping("/{id}")
-//	public ResponseEntity<PedidoDto> obterPorId(@PathVariable Long id) {
-//		return null;
-//	}
+	@GetMapping("/{id}")
+	public ResponseEntity<PedidoDto> obterPorId(@PathVariable Long id) {
+		Optional<PedidoDto> pedidoDto = servico.obterPorId(id);
+		if (pedidoDto.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(pedidoDto.get(), HttpStatus.FOUND);
+	}
 	
 	//TODO
 //	@GetMapping
@@ -62,12 +66,12 @@ public class PedidoController {
 		return ResponseEntity.ok(pedidoDto.get());
 	}
 	
-	//TODO
+	//TODO: Check exceptions
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> excluir(@PathVariable Long id) {
 		if (servico.excluir(id)) {
-			
+			return ResponseEntity.noContent().build();
 		}
-		return null;
+		return ResponseEntity.notFound().build();
 	}
 }

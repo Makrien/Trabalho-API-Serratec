@@ -3,39 +3,33 @@ package br.gov.serratec.grupo05api.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import br.gov.serratec.grupo05api.config.Mapper;
+import br.gov.serratec.grupo05api.model.Cliente;
+import br.gov.serratec.grupo05api.model.ItemPedido;
 import br.gov.serratec.grupo05api.model.Pedido;
-import br.gov.serratec.grupo05api.model.Produto;
 
 public record PedidoDto(Long id,
-        String dataPedido,
-        String dataEntrega,
-        String dataEnvio,
+        LocalDate dataPedido,
+        LocalDate dataEntrega,
+        LocalDate dataEnvio,
         String status,
         Double valorTotal,
-        List<ProdutoDto> produtos) {
+        Cliente cliente,
+        List<ItemPedido> itensPedido) {
 
 	public Pedido toEntity() {
         Pedido pedido = new Pedido();
-        pedido.setDataPedido(LocalDate.parse(this.dataPedido));
-        pedido.setDataEntrega(LocalDate.parse(this.dataEntrega));
-        pedido.setDataEnvio(LocalDate.parse(this.dataEnvio));
+        pedido.setDataPedido(this.dataPedido);
+        pedido.setDataEntrega(this.dataEntrega);
+        pedido.setDataEnvio(this.dataEnvio);
         pedido.setStatus(this.status);
         pedido.setValorTotal(this.valorTotal);
+        pedido.setCliente(this.cliente);
+        pedido.setItensPedido(this.itensPedido);
         return pedido;
     }
-	
-    public PedidoDto toDto(Pedido pedidoEntity) {
-        return new PedidoDto(
-        			pedidoEntity.getId(),
-        			pedidoEntity.getDataPedido().toString(),
-        			pedidoEntity.getDataEntrega().toString(),
-        			pedidoEntity.getDataEnvio().toString(),
-        			pedidoEntity.getStatus(),
-        			pedidoEntity.getValorTotal(),
-        			pedidoEntity.getProdutos()
-        		);
-    }
 
+    public static PedidoDto toDto(Pedido pedidoEntity) {
+        return Mapper.getMapper().convertValue(pedidoEntity, PedidoDto.class);
+    }
 }

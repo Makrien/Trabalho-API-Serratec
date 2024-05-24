@@ -27,7 +27,7 @@ public class Endereco {
 	public Endereco() {}
 	
 	public Endereco(Long id, String cep, String rua, String bairro, String cidade, int numero, String complemento,
-			String uf, Cliente cliente) {
+			String uf) {
 		super();
 		this.id = id;
 		this.cep = cep;
@@ -37,7 +37,6 @@ public class Endereco {
 		this.numero = numero;
 		this.complemento = complemento;
 		this.uf = uf;
-		this.cliente = cliente;
 	}
 	public Long getId() {
 		return id;
@@ -87,15 +86,9 @@ public class Endereco {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
 	public EnderecoDto toDto() {
 		return new EnderecoDto(this.id, this.cep, this.rua, this.bairro,
-				this.cidade, this.numero, this.complemento, this.uf, this.cliente);
+				this.cidade, this.numero, this.complemento, this.uf);
 	}
 	
 	

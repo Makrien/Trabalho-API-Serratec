@@ -1,8 +1,6 @@
 package br.gov.serratec.grupo05api.dto;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import br.gov.serratec.grupo05api.model.Produto;
 
@@ -14,8 +12,7 @@ public record ProdutoDto(
         String dataCadastro,
         Double valorUnitario,
         String imagem,
-        CategoriaDto categoria,
-        List<ItemPedidoDto> itemPedido) {
+        CategoriaDto categoria) {
 	
 	public Produto toEntity() {
 		Produto produto = new Produto();
@@ -41,10 +38,7 @@ public record ProdutoDto(
                 produtoEntity.getDataCadastro().toString(),
                 produtoEntity.getValorUnitario(),
                 produtoEntity.getImagem(),
-                CategoriaDto.toDto(produtoEntity.getCategoria()),
-                produtoEntity.getItemPedido().stream()
-                        .map(ItemPedidoDto::toDto)
-                        .collect(Collectors.toList())
+                CategoriaDto.toDto(produtoEntity.getCategoria())
         );
     }
 

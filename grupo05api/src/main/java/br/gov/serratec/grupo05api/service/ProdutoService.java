@@ -2,13 +2,11 @@ package br.gov.serratec.grupo05api.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.serratec.grupo05api.dto.CategoriaDto;
-import br.gov.serratec.grupo05api.dto.ItemPedidoDto;
 import br.gov.serratec.grupo05api.dto.ProdutoDto;
 import br.gov.serratec.grupo05api.model.Produto;
 import br.gov.serratec.grupo05api.repository.ProdutoRepository;
@@ -31,10 +29,7 @@ public class ProdutoService {
                     produto.getDataCadastro().toString(),
                     produto.getValorUnitario(),
                     produto.getImagem(),
-                    CategoriaDto.toDto(produto.getCategoria()),
-                    produto.getItemPedido() != null ? produto.getItemPedido().stream()
-                            .map(ItemPedidoDto::toDto)
-                            .collect(Collectors.toList()) : new ArrayList<>()
+                    CategoriaDto.toDto(produto.getCategoria())
             );
             produtoDtos.add(produtoDto);
         }
