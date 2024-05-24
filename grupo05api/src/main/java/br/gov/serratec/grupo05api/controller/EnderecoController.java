@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.gov.serratec.grupo05api.dto.EnderecoCadastroDto;
 import br.gov.serratec.grupo05api.dto.EnderecoDto;
 import br.gov.serratec.grupo05api.service.EnderecoService;
 import jakarta.validation.Valid;
@@ -32,7 +33,7 @@ public class EnderecoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<EnderecoDto> cadastrarEndereco(@RequestBody @Valid EnderecoDto endereco) {
+	public ResponseEntity<EnderecoDto> cadastrarEndereco(@RequestBody EnderecoCadastroDto endereco) {
 		return ResponseEntity.ok(servico.cadastrarEndereco(endereco));
 	}
 	
