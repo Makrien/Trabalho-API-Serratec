@@ -6,7 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.gov.serratec.grupo05api.dto.ClienteDto;
-
+import br.gov.serratec.grupo05api.dto.ClienteEnderecoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -134,7 +134,11 @@ public class Cliente {
 	}
 
 
-	public ClienteDto toDto(Cliente cliente) {
+	public ClienteEnderecoDto enderecoToDto(Cliente cliente) {
+		return new ClienteEnderecoDto(cliente.id, cliente.email, cliente.nomeCompleto,
+				cliente.cpf, cliente.telefone, cliente.dataNascimento.toString(), cliente.endereco.getId());
+	}
+	public static  ClienteDto toDto(Cliente cliente) {
 		return new ClienteDto(cliente.id, cliente.email, cliente.nomeCompleto,
 				cliente.cpf, cliente.telefone, cliente.dataNascimento.toString(), cliente.endereco);
 	}

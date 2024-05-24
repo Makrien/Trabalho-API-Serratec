@@ -62,6 +62,7 @@ CREATE TABLE item_pedido (
     FOREIGN KEY (produto_id) REFERENCES produto(id)
 );
 
+
 INSERT INTO endereco (cep, rua, bairro, cidade, numero, complemento, uf) VALUES
 ('01001000', 'Avenida Paulista', 'Bela Vista', 'São Paulo', '123', 'Apto 101', 'SP'),
 ('30140071', 'Rua da Bahia', 'Centro', 'Belo Horizonte', '456', 'Sala 202', 'MG'),

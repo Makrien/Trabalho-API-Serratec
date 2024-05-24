@@ -1,19 +1,19 @@
 package br.gov.serratec.grupo05api.dto;
 
 import java.time.LocalDate;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import br.gov.serratec.grupo05api.model.Cliente;
-import br.gov.serratec.grupo05api.model.Endereco;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record ClienteDto(
+public record ClienteEnderecoDto(
         Long id,
         @NotBlank(message = "O email não deve ser nulo")
+        @NotNull(message = "O email não deve ser nulo")
         @Email(message = "O email deve ser válido")
         String email,
         @NotBlank(message = "O nome completo não deve estar em branco")
@@ -25,8 +25,8 @@ public record ClienteDto(
         String telefone,
         @NotBlank(message = "A data de nascimento não deve ser nula")
         String dataNascimento,
-        @NotNull(message = "O endereço não deve ser nulo")
-        Endereco endereco) {
+        @NotNull(message = "O ID do endereço não deve ser nulo")
+        Long enderecoId) {
 
     public Cliente toEntity() {
         Cliente cliente = new Cliente();
@@ -35,7 +35,6 @@ public record ClienteDto(
         cliente.setCpf(this.cpf);
         cliente.setTelefone(this.telefone);
         cliente.setDataNascimento(LocalDate.parse(dataNascimento));
-        cliente.setEndereco(this.endereco);
         return cliente;
     }
 }
