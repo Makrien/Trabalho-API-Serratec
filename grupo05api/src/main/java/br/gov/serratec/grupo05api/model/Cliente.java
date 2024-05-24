@@ -29,7 +29,7 @@ public class Cliente {
 	private String cpf;
 	private String telefone;
 	@JsonFormat(pattern = "dd/MM/yyyy")
-  private LocalDate dataNascimento;
+	private LocalDate dataNascimento;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_id")

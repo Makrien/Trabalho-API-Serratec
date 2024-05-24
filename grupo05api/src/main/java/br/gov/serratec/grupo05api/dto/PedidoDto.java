@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.gov.serratec.grupo05api.config.Mapper;
 import br.gov.serratec.grupo05api.model.Cliente;
-import br.gov.serratec.grupo05api.model.ItemPedido;
 import br.gov.serratec.grupo05api.model.Pedido;
 
 public record PedidoDto(Long id,
