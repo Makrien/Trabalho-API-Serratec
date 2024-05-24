@@ -29,7 +29,7 @@ public class ClienteService {
 
     public List<ClienteDto> buscarTodos() {
         return clienteRepository.findAll().stream()
-                .map(c -> new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento().toString(), c.getEndereco()))
+                .map(c -> new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento(), c.getEndereco()))
                 .toList();
     }
 
@@ -37,7 +37,7 @@ public class ClienteService {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
         if (clienteOptional.isPresent()) {
             Cliente c = clienteOptional.get();
-            return new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento().toString(), c.getEndereco());
+            return new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento(), c.getEndereco());
         }
         return null;
     }

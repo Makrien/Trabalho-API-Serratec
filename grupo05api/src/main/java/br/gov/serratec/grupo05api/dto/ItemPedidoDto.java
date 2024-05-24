@@ -11,8 +11,8 @@ public record ItemPedidoDto(
         Double percentualDesconto,
         Double valorBruto,
         Double valorLiquido,
-        ProdutoDto produto,
-        PedidoDto pedido) {
+        ProdutoDto produto) {
+	
 	public ItemPedido toEntity() {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.convertValue(this, ItemPedido.class);
