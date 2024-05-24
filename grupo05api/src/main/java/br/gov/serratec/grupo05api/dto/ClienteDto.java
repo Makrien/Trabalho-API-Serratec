@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.gov.serratec.grupo05api.model.Cliente;
 import br.gov.serratec.grupo05api.model.Endereco;
+import jakarta.validation.constraints.NotBlank;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ClienteDto(
@@ -14,6 +15,7 @@ public record ClienteDto(
 		String nomeCompleto,
 		String cpf,
 		String telefone,
+		@NotBlank(message ="Data de nascimento não pode estar em branco!")
 	    String dataNascimento,
 		Endereco endereco) {
 	
