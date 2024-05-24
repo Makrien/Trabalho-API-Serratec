@@ -1,6 +1,5 @@
 package br.gov.serratec.grupo05api.dto;
 
-
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
