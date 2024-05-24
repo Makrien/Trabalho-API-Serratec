@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,13 +20,12 @@ public class Endereco {
 	private int numero;
 	private String complemento;
 	private String uf;
-	@OneToOne(mappedBy = "endereco")
-	private Cliente cliente;
+	
 	
 	public Endereco() {}
 	
 	public Endereco(Long id, String cep, String rua, String bairro, String cidade, int numero, String complemento,
-			String uf, Cliente cliente) {
+			String uf) {
 		super();
 		this.id = id;
 		this.cep = cep;
@@ -37,7 +35,7 @@ public class Endereco {
 		this.numero = numero;
 		this.complemento = complemento;
 		this.uf = uf;
-		this.cliente = cliente;
+    
 	}
 	public Long getId() {
 		return id;
@@ -87,17 +85,9 @@ public class Endereco {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+
 	public EnderecoDto toDto() {
 		return new EnderecoDto(this.id, this.cep, this.rua, this.bairro,
-				this.cidade, this.numero, this.complemento, this.uf, this.cliente);
-	}
-	
-	
-	
+				this.cidade, this.numero, this.complemento, this.uf);
+	}	
 }

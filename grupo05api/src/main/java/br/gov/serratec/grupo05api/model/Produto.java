@@ -1,12 +1,14 @@
 package br.gov.serratec.grupo05api.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -23,13 +25,14 @@ public class Produto {
 	private Long qtdEstoque;
 	private LocalDate dataCadastro;
 	private Double valorUnitario;
-	private byte[] imagem;
+	private String imagem;
 	
 	@ManyToOne
+	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
 	
 	@OneToMany(mappedBy = "produto")
-	List<ItemPedido> itemPedido;
+	private List<ItemPedido> itemPedido = new ArrayList<>();
 	
 
 	public Produto() {
@@ -37,7 +40,7 @@ public class Produto {
 	}
 
 	public Produto(Long id, String nome, String descricao, Long qtdEstoque, LocalDate dataCadastro,
-			Double valorUnitario, byte[] imagem, Categoria categoria) {
+			Double valorUnitario, String imagem, Categoria categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -47,6 +50,7 @@ public class Produto {
 		this.valorUnitario = valorUnitario;
 		this.imagem = imagem;
 		this.categoria = categoria;
+		this.itemPedido = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -97,13 +101,11 @@ public class Produto {
 		this.valorUnitario = valorUnitario;
 	}
 
-	
-
-	public byte[] getImagem() {
+	public String getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(byte[] imagem) {
+	public void setImagem(String imagem) {
 		this.imagem = imagem;
 	}
 
@@ -122,8 +124,5 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-	
-	
-	
 	
 }

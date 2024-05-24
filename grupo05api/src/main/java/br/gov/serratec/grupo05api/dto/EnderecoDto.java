@@ -21,7 +21,7 @@ public record EnderecoDto(
 
 	public Endereco toEntity() {
 		return new Endereco(this.id, this.cep, this.rua, this.bairro,
-				this.cidade, this.numero, this.complemento, this.uf, this.cliente);
+				this.cidade, this.numero, this.complemento, this.uf);
 	}
 
 }
