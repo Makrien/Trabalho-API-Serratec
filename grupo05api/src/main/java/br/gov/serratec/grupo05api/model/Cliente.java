@@ -4,9 +4,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.gov.serratec.grupo05api.dto.ClienteDto;
 import br.gov.serratec.grupo05api.dto.ClienteEnderecoDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,10 +30,12 @@ public class Cliente {
 	private String telefone;
 	@JsonFormat(pattern = "dd/MM/yyyy")
   private LocalDate dataNascimento;
-	@OneToOne
+	
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
-
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos;
 
@@ -136,10 +140,10 @@ public class Cliente {
 
 	public ClienteEnderecoDto enderecoToDto(Cliente cliente) {
 		return new ClienteEnderecoDto(cliente.id, cliente.email, cliente.nomeCompleto,
-				cliente.cpf, cliente.telefone, cliente.dataNascimento.toString(), cliente.endereco.getId());
+				cliente.cpf, cliente.telefone, cliente.dataNascimento, cliente.endereco.getId());
 	}
 	public static  ClienteDto toDto(Cliente cliente) {
 		return new ClienteDto(cliente.id, cliente.email, cliente.nomeCompleto,
-				cliente.cpf, cliente.telefone, cliente.dataNascimento.toString(), cliente.endereco);
+				cliente.cpf, cliente.telefone, cliente.dataNascimento, cliente.endereco);
 	}
 }

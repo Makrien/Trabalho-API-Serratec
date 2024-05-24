@@ -15,7 +15,7 @@ public record PedidoDto(Long id,
         String status,
         Double valorTotal,
         Cliente cliente,
-        List<ItemPedido> itensPedido) {
+        List<ItemPedidoDto> itensPedido) {
 
 	public Pedido toEntity() {
         Pedido pedido = new Pedido();
@@ -25,7 +25,7 @@ public record PedidoDto(Long id,
         pedido.setStatus(this.status);
         pedido.setValorTotal(this.valorTotal);
         pedido.setCliente(this.cliente);
-        pedido.setItensPedido(this.itensPedido);
+        pedido.setItensPedido(this.itensPedido.stream().map(i -> i.toEntity()).toList());
         return pedido;
     }
 

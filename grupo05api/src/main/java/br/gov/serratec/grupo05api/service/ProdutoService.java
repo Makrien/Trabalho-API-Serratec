@@ -1,9 +1,8 @@
 package br.gov.serratec.grupo05api.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class ProdutoService {
                     produto.getNome(),
                     produto.getDescricao(),
                     produto.getQtdEstoque(),
-                    produto.getDataCadastro().toString(),
+                    produto.getDataCadastro(),
                     produto.getValorUnitario(),
                     produto.getImagem(),
                     CategoriaDto.toDto(produto.getCategoria())
@@ -51,7 +50,7 @@ public class ProdutoService {
             produto.setNome(produtoDto.nome());
             produto.setDescricao(produtoDto.descricao());
             produto.setQtdEstoque(produtoDto.qtdEstoque());
-            produto.setDataCadastro(LocalDate.parse(produtoDto.dataCadastro()));
+            produto.setDataCadastro(produtoDto.dataCadastro());
             produto.setValorUnitario(produtoDto.valorUnitario());
             produto.setImagem(produtoDto.imagem());
             produto.setCategoria(produtoDto.categoria().toEntity());
@@ -84,14 +83,9 @@ public class ProdutoService {
                                 produtoEntity.getNome(),
                                 produtoEntity.getDescricao(),
                                 produtoEntity.getQtdEstoque(),
-                                produtoEntity.getDataCadastro().toString(),
+                                produtoEntity.getDataCadastro(),
                                 produtoEntity.getValorUnitario(),
                                 produtoEntity.getImagem(),
-                                CategoriaDto.toDto(produtoEntity.getCategoria()),
-                                produtoEntity.getItemPedido() != null ? produtoEntity.getItemPedido().stream()
-                                        .map(ItemPedidoDto::toDto)
-                                        .collect(Collectors.toList()) : Collections.emptyList()
-                       ))
-                       .collect(Collectors.toList());
+                                CategoriaDto.toDto(produtoEntity.getCategoria()))).toList();
     }
 }

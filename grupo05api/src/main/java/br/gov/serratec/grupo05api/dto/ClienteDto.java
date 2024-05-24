@@ -24,7 +24,7 @@ public record ClienteDto(
         @NotNull(message = "O telefone não deve ser nulo")
         String telefone,
         @NotBlank(message = "A data de nascimento não deve ser nula")
-        String dataNascimento,
+        LocalDate dataNascimento,
         @NotNull(message = "O endereço não deve ser nulo")
         Endereco endereco) {
 
@@ -34,7 +34,7 @@ public record ClienteDto(
         cliente.setNomeCompleto(this.nomeCompleto);
         cliente.setCpf(this.cpf);
         cliente.setTelefone(this.telefone);
-        cliente.setDataNascimento(LocalDate.parse(dataNascimento));
+        cliente.setDataNascimento(dataNascimento);
         cliente.setEndereco(this.endereco);
         return cliente;
     }
