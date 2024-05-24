@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +25,9 @@ public class Pedido {
 	private LocalDate dataEnvio;
 	private String status;
 	private Double valorTotal;
+
+	@ManyToOne
+	private Cliente cliente;
 	
 	@ManyToMany
 	@JoinTable(name = "item_pedido", 
@@ -103,6 +107,14 @@ public class Pedido {
 
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 	
 	
