@@ -3,6 +3,7 @@ package br.gov.serratec.grupo05api.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import br.gov.serratec.grupo05api.dto.PedidoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -116,7 +117,6 @@ public class Pedido {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
-	
+
 	
 }
