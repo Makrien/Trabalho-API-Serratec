@@ -16,8 +16,6 @@ public class EmailService {
 	private String remetente;
 
 	public String enviarEmail(String destinatario, String assunto, String mensagem) {
-
-
 		try {
 			SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 			simpleMailMessage.setFrom(remetente);
@@ -29,6 +27,5 @@ public class EmailService {
 		}catch (Exception e) {
 			return "Erro ao enviar e-mail" + e.getLocalizedMessage();
 		}
-
 	}
 }

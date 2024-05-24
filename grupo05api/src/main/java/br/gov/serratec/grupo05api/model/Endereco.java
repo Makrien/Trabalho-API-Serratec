@@ -35,7 +35,7 @@ public class Endereco {
 		this.numero = numero;
 		this.complemento = complemento;
 		this.uf = uf;
-		
+    
 	}
 	public Long getId() {
 		return id;
@@ -85,12 +85,9 @@ public class Endereco {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-	
+
 	public EnderecoDto toDto() {
 		return new EnderecoDto(this.id, this.cep, this.rua, this.bairro,
 				this.cidade, this.numero, this.complemento, this.uf);
-	}
-	
-	
-	
+	}	
 }

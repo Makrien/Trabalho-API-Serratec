@@ -19,7 +19,8 @@ public record EnderecoDto(
 		 @NotBlank(message = "Informe um complemento!")
 		 String complemento,
 		 @NotBlank(message = "Informe uma UF!")
-		 String uf) {
+		 String uf
+		 ) {
 
 	public Endereco toEntity() {
 		return new Endereco(this.id, this.cep, this.rua, this.bairro,

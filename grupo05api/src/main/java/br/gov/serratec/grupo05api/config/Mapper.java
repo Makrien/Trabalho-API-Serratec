@@ -1,7 +1,5 @@
 package br.gov.serratec.grupo05api.config;
 
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
