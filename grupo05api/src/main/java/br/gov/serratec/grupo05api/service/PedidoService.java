@@ -42,10 +42,18 @@ public class PedidoService {
 		if (pedidoEntity.isEmpty()) {
 			return false;
 		}
-		pedidoEntity.get().getProdutos().clear();
+		pedidoEntity.get().getItensPedido().clear();
 		repositorio.save(pedidoEntity.get());
 		repositorio.excluirPedido(id);
 		return true;
+	}
+
+	public Optional<PedidoDto> obterPorId(Long id) {
+		Optional<Pedido> pedidoEntity = repositorio.findById(id);
+		if (pedidoEntity.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(PedidoDto.toDto(pedidoEntity.get()));
 	}
 	
 	

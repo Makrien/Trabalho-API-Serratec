@@ -8,9 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,22 +26,16 @@ public class Pedido {
 	private Double valorTotal;
 
 	@ManyToOne
+	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@ManyToMany
-	@JoinTable(name = "item_pedido", 
-		joinColumns = @JoinColumn(name = "pedido_id"),
-		inverseJoinColumns = @JoinColumn(name = "produto_id"))
-	List<Produto> produtos;
-	
-	
+	@OneToMany(mappedBy = "pedido")
+	List<ItemPedido> itensPedido;
 
-	public Pedido() {
-		super();
-	}
+	public Pedido() {}
 
 	public Pedido(Long id, LocalDate dataPedido, LocalDate dataEntrega, LocalDate dataEnvio, String status,
-			Double valorTotal, List<Produto> produtos) {
+			Double valorTotal, Cliente cliente, List<ItemPedido> itensPedido) {
 		super();
 		this.id = id;
 		this.dataPedido = dataPedido;
@@ -50,7 +43,8 @@ public class Pedido {
 		this.dataEnvio = dataEnvio;
 		this.status = status;
 		this.valorTotal = valorTotal;
-		this.produtos = produtos;
+		this.cliente = cliente;
+		this.itensPedido = itensPedido;
 	}
 
 	public Long getId() {
@@ -101,14 +95,6 @@ public class Pedido {
 		this.valorTotal = valorTotal;
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
-	}
-
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
-	}
-
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -116,7 +102,12 @@ public class Pedido {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
-	
-	
+
+	public List<ItemPedido> getItensPedido() {
+		return itensPedido;
+	}
+
+	public void setItensPedido(List<ItemPedido> itensPedido) {
+		this.itensPedido = itensPedido;
+	}
 }

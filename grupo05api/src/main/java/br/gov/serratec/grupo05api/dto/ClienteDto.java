@@ -1,16 +1,11 @@
 package br.gov.serratec.grupo05api.dto;
 
-
 import java.time.LocalDate;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.serratec.grupo05api.model.Cliente;
 import br.gov.serratec.grupo05api.model.Endereco;
-import br.gov.serratec.grupo05api.model.Pedido;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ClienteDto(

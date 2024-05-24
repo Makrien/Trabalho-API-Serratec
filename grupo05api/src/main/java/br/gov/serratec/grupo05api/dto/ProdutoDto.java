@@ -1,9 +1,6 @@
 package br.gov.serratec.grupo05api.dto;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import br.gov.serratec.grupo05api.model.Produto;
 import jakarta.validation.constraints.NotEmpty;
@@ -35,10 +32,8 @@ public record ProdutoDto(
         @Positive(message = "Valor unitário deve ser positivo")
         Double valorUnitario,
         String imagem,
-        
         @NotNull(message = "Categoria não pode ser nula")
-        CategoriaDto categoria,
-        List<ItemPedidoDto> itemPedido) {
+        CategoriaDto categoria) {
 	
 	public Produto toEntity() {
 		Produto produto = new Produto();
@@ -65,10 +60,7 @@ public record ProdutoDto(
                 produtoEntity.getDataCadastro().toString(),
                 produtoEntity.getValorUnitario(),
                 produtoEntity.getImagem(),
-                CategoriaDto.toDto(produtoEntity.getCategoria()),
-                produtoEntity.getItemPedido() != null ? produtoEntity.getItemPedido().stream()
-                        .map(ItemPedidoDto::toDto)
-                        .collect(Collectors.toList()) : Collections.emptyList()
+                CategoriaDto.toDto(produtoEntity.getCategoria())
         );
     }
 

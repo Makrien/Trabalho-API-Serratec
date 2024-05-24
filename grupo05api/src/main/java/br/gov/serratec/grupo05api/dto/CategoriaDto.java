@@ -1,7 +1,5 @@
 package br.gov.serratec.grupo05api.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.serratec.grupo05api.model.Categoria;
@@ -16,12 +14,10 @@ public record CategoriaDto(
         @NotEmpty(message = "Nome não pode ser vazio")
         @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
         String nome,
-        
         @NotNull(message = "Descrição não pode ser nula")
         @NotEmpty(message = "Descrição não pode ser vazia")
         @Size(min = 2, max = 255, message = "Descrição deve ter entre 2 e 255 caracteres")
-        String descricao,
-        List<ProdutoDto> produto) {
+        String descricao) {
 
     public Categoria toEntity() {
         ObjectMapper mapper = new ObjectMapper();
