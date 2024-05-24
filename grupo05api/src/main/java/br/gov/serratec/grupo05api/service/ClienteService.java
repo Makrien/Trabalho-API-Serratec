@@ -57,7 +57,7 @@ public class ClienteService {
         }
         cliente.setEndereco(clienteEndereco.get());
         clienteRepository.save(cliente);
-        emailService.enviarEmail(clienteDto.email(), "Cadastro de cleinte.", "Novo cliente cadastrado");
+        emailService.enviarEmail(cliente.getEmail(), "Cadastro de cliente.", "Olá " + cliente.getNomeCompleto() + ", Seu cadastro foi efetuado com sucesso!!");
         return Cliente.toDto(cliente);
     }
 
