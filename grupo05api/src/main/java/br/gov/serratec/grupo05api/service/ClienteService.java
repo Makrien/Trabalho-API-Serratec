@@ -23,6 +23,9 @@ public class ClienteService {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+    
+    @Autowired
+    private EmailService emailService;
 
     public List<ClienteDto> buscarTodos() {
         return clienteRepository.findAll().stream()
@@ -54,6 +57,7 @@ public class ClienteService {
         }
         cliente.setEndereco(clienteEndereco.get());
         clienteRepository.save(cliente);
+        emailService.enviarEmail(clienteDto.email(), "Cadastro de cleinte.", "Novo cliente cadastrado");
         return Cliente.toDto(cliente);
     }
 
