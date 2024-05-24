@@ -61,12 +61,13 @@ public class ClienteService {
         return Cliente.toDto(cliente);
     }
 
-    public ClienteDto atualizar(Long id, ClienteDto clienteDto) {
+    public ClienteDto atualizar(Long id, ClienteEnderecoDto c) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        Optional<Endereco> eOptional = enderecoRepository.findById(c.enderecoId());
         if (clienteOptional.isPresent()) {
-            Cliente cliente = clienteDto.toEntity();
-            cliente.setId(id);
-            return Cliente.toDto(clienteRepository.save(cliente));
+            ClienteDto clienteDto = new ClienteDto(id,c.email(),c.nomeCompleto(),
+            		c.cpf(),c.telefone(), c.dataNascimento(),eOptional.get());
+            return Cliente.toDto(clienteRepository.save(clienteDto.toEntity()));
         }
         return null;
     }

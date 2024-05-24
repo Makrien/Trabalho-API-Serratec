@@ -47,7 +47,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> criarCliente(@Valid @RequestBody ClienteDto clienteDto) {
+    public ResponseEntity<?> criarCliente(@Valid @RequestBody ClienteEnderecoDto clienteDto) {
     	ClienteDto clienteCriado = clienteService.criar(clienteDto);
     	if(clienteCriado == null) {
     		return ResponseEntity.badRequest().body("Email ou cpf do cliente já cadastrados, verifique.");
@@ -56,7 +56,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id, @Valid @RequestBody ClienteDto clienteDto) {
+    public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id, @Valid @RequestBody ClienteEnderecoDto clienteDto) {
         ClienteDto clienteAtualizado = clienteService.atualizar(id, clienteDto);
         if (clienteAtualizado == null) {
             return ResponseEntity.notFound().build();

@@ -33,6 +33,7 @@ public record ClienteDto(
 
     public Cliente toEntity() {
         Cliente cliente = new Cliente();
+        cliente.setId(this.id);
         cliente.setEmail(this.email);
         cliente.setNomeCompleto(this.nomeCompleto);
         cliente.setCpf(this.cpf);
