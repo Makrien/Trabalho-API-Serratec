@@ -17,13 +17,14 @@ import br.gov.serratec.grupo05api.dto.ClienteDto;
 import br.gov.serratec.grupo05api.dto.ClienteEnderecoDto;
 import br.gov.serratec.grupo05api.service.ClienteService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
-
 
     @GetMapping
     public ResponseEntity<List<ClienteDto>> buscarTodosClientes() {
@@ -41,16 +42,13 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> criarCliente(@RequestBody ClienteEnderecoDto clienteDto) {
-    	ClienteDto clienteCriado = clienteService.criar(clienteDto);
-    	if(clienteCriado == null) {
-    		return ResponseEntity.badRequest().body("Email ou cpf do cliente já cadastrados, verifique.");
-    	}
+    public ResponseEntity<?> criarCliente(@Valid @RequestBody ClienteEnderecoDto clienteDto) {
+        ClienteDto clienteCriado = clienteService.criar(clienteDto);
         return ResponseEntity.ok(clienteCriado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id, @RequestBody ClienteDto clienteDto) {
+    public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id, @Valid @RequestBody ClienteDto clienteDto) {
         ClienteDto clienteAtualizado = clienteService.atualizar(id, clienteDto);
         if (clienteAtualizado == null) {
             return ResponseEntity.notFound().build();

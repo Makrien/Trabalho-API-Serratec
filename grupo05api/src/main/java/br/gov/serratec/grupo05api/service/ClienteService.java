@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.gov.serratec.grupo05api.dto.ClienteDto;
 import br.gov.serratec.grupo05api.dto.ClienteEnderecoDto;
@@ -18,40 +20,38 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
-    
+
     @Autowired
     private EnderecoRepository enderecoRepository;
-    
-	public List<ClienteDto> buscarTodos() {
-		return clienteRepository.findAll().stream().map(c -> new ClienteDto(c.getId(), c.getEmail(),
-				c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento().toString(), c.getEndereco()))
-				.toList();
-	}
 
-	public ClienteDto buscarPorId(Long id) {
+    public List<ClienteDto> buscarTodos() {
+        return clienteRepository.findAll().stream()
+                .map(c -> new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento().toString(), c.getEndereco()))
+                .toList();
+    }
 
+    public ClienteDto buscarPorId(Long id) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
         if (clienteOptional.isPresent()) {
             Cliente c = clienteOptional.get();
-            ClienteDto clienteDto = new ClienteDto(c.getId(), c.getEmail(),
-                    c.getNomeCompleto(), c.getCpf(),c.getTelefone(), 
-                    c.getDataNascimento().toString(), c.getEndereco());
-            return clienteDto;
+            return new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento().toString(), c.getEndereco());
         }
-
         return null;
     }
 
     public ClienteDto criar(ClienteEnderecoDto clienteDto) {
-    	List<Cliente> listaC = clienteRepository.findAll();
-    	for (Cliente cliente : listaC) {
-    		if (cliente.getEmail().equals(clienteDto.email())
-    		        || cliente.getCpf().equals(clienteDto.cpf())) {
-    		    return null;
-    		}
-    	}
+        if (clienteRepository.existsByEmail(clienteDto.email())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email já cadastrado.");
+        }
+        if (clienteRepository.existsByCpf(clienteDto.cpf())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF já cadastrado.");
+        }
+
         Cliente cliente = clienteDto.toEntity();
         Optional<Endereco> clienteEndereco = enderecoRepository.findById(clienteDto.enderecoId());
+        if (clienteEndereco.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Endereço não encontrado.");
+        }
         cliente.setEndereco(clienteEndereco.get());
         clienteRepository.save(cliente);
         return Cliente.toDto(cliente);
@@ -62,7 +62,7 @@ public class ClienteService {
         if (clienteOptional.isPresent()) {
             Cliente cliente = clienteDto.toEntity();
             cliente.setId(id);
-            return cliente.toDto(clienteRepository.save(cliente));
+            return Cliente.toDto(clienteRepository.save(cliente));
         }
         return null;
     }
