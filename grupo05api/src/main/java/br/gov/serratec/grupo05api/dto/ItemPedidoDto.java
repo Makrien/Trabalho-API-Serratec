@@ -11,15 +11,17 @@ public record ItemPedidoDto(
         Double percentualDesconto,
         Double valorBruto,
         Double valorLiquido,
-        ProdutoDto produto) {
+        Long idProduto,
+        Long idPedido) {
 	
+	// TODO
 	public ItemPedido toEntity() {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(this, ItemPedido.class);
+        
+        return null;
     }
 
+	//TODO
     public static ItemPedidoDto toDto(ItemPedido itemPedidoEntity) {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(itemPedidoEntity, ItemPedidoDto.class);
+        return null;
     }
 }
