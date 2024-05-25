@@ -24,8 +24,11 @@ public record PedidoDto(Long id,
         pedido.setStatus(this.status);
         pedido.setValorTotal(this.valorTotal);
         pedido.setCliente(this.cliente);
-        pedido.setItensPedido(this.itensPedido.stream().map(i -> i.toEntity()).toList());
+        pedido.setItensPedido(this.itensPedido.stream().map(i -> 
+        i.toEntity()
+        ).toList());
         return pedido;
+        
     }
 
     public static PedidoDto toDto(Pedido pedidoEntity) {
