@@ -88,6 +88,6 @@ public class Endereco {
 
 	public EnderecoDto toDto() {
 		return new EnderecoDto(this.id, this.cep, this.rua, this.bairro,
-				this.cidade, this.numero, this.complemento, this.uf);
+				this.cidade, this.numero, this.complemento, this.uf, null);
 	}	
 }
