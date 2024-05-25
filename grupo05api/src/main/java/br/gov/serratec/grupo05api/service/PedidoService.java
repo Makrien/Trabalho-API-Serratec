@@ -2,12 +2,18 @@ package br.gov.serratec.grupo05api.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import br.gov.serratec.grupo05api.dto.PedidoCadastroDto;
 import br.gov.serratec.grupo05api.dto.PedidoDto;
+import br.gov.serratec.grupo05api.model.Cliente;
 import br.gov.serratec.grupo05api.model.Pedido;
+import br.gov.serratec.grupo05api.repository.ClienteRepository;
 import br.gov.serratec.grupo05api.repository.PedidoRepository;
 import jakarta.validation.Valid;
 
@@ -15,46 +21,72 @@ import jakarta.validation.Valid;
 public class PedidoService {
 
 	@Autowired
-	private PedidoRepository repositorio;
+	private PedidoRepository pedidoRepo;
+	
+	@Autowired
+	private ClienteRepository clienteRepo;
 
 	public List<PedidoDto> obterTodos() {
-		return repositorio.findAll().stream().map(p -> PedidoDto.toDto(p)).toList();
+		return pedidoRepo.findAll().stream()
+				.map(PedidoDto::toDto)
+				.collect(Collectors.toList());
 	}
-
-	public PedidoDto cadastrar(@Valid PedidoDto novoPedido) {
-		Pedido pedidoEntity = repositorio.save(novoPedido.toEntity());
-		return PedidoDto.toDto(pedidoEntity);
-	}
-
-	public Optional<PedidoDto> atualizar(Long id, @Valid PedidoDto pedido) {
-		if (repositorio.existsById(id)) {
-			Pedido pedidoEntity = pedido.toEntity();
-			pedidoEntity.setId(id);
-			repositorio.save(pedidoEntity);
-			return Optional.of(PedidoDto.toDto(pedidoEntity));
-		}
-		return Optional.empty();
-	}
-
-	public boolean excluir(Long id) {
-		Optional<Pedido> pedidoEntity = repositorio.findById(id);
-		
-		if (pedidoEntity.isEmpty()) {
-			return false;
-		}
-		pedidoEntity.get().getItensPedido().clear();
-		repositorio.save(pedidoEntity.get());
-		repositorio.excluirPedido(id);
-		return true;
-	}
-
+	
 	public Optional<PedidoDto> obterPorId(Long id) {
-		Optional<Pedido> pedidoEntity = repositorio.findById(id);
+		Optional<Pedido> pedidoEntity = pedidoRepo.findById(id);
 		if (pedidoEntity.isEmpty()) {
 			return Optional.empty();
 		}
 		return Optional.of(PedidoDto.toDto(pedidoEntity.get()));
 	}
+
+	public PedidoDto cadastrar(@Valid PedidoCadastroDto novoPedido) {
+		Optional<Cliente> clienteOpt = clienteRepo.findById(novoPedido.idCliente());
+		if (clienteOpt.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente não cadastrado.");
+		}
+		
+		Pedido pedido = novoPedido.toEntity(clienteOpt.get());		
+		Pedido pedidoEntity = pedidoRepo.save(pedido);
+		return PedidoDto.toDto(pedidoEntity);
+	}
+
+	public Optional<PedidoDto> atualizar(Long pedidoId, @Valid PedidoCadastroDto pedidoDto) {
+		if (pedidoRepo.existsById(pedidoId)) {
+			Optional<Cliente> clienteOpt = clienteRepo.findById(pedidoDto.idCliente());
+			if (clienteOpt.isEmpty()) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente não cadastrado.");
+			}
+		
+			Pedido pedidoEntity = pedidoRepo.findById(pedidoId).orElseThrow(() -> 
+				new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
+			
+			pedidoEntity.setDataPedido(pedidoDto.dataPedido());
+            pedidoEntity.setDataEntrega(pedidoDto.dataEntrega());
+            pedidoEntity.setDataEnvio(pedidoDto.dataEnvio());
+            pedidoEntity.setStatus(pedidoDto.status());
+            pedidoEntity.setValorTotal(pedidoDto.valorTotal());
+            pedidoEntity.setCliente(clienteOpt.get());
+
+            pedidoRepo.save(pedidoEntity);
+            return Optional.of(PedidoDto.toDto(pedidoEntity));
+		}
+	        return Optional.empty();
+	}
+
+	public boolean excluir(Long id) {
+		Optional<Pedido> pedidoEntity = pedidoRepo.findById(id);
+		
+		if (pedidoEntity.isEmpty()) {
+			return false;
+		}
+		pedidoEntity.get().getItensPedido().clear();
+		pedidoRepo.save(pedidoEntity.get());
+		pedidoRepo.excluirPedido(id);
+		return true;
+	}
+
+
 	
 	
 }

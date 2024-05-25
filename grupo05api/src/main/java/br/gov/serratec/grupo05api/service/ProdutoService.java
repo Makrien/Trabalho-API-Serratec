@@ -5,9 +5,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import br.gov.serratec.grupo05api.dto.ProdutoCategoriaDto;
+
+import br.gov.serratec.grupo05api.dto.ProdutoCadastroDto;
 import br.gov.serratec.grupo05api.dto.ProdutoDto;
 import br.gov.serratec.grupo05api.model.Categoria;
 import br.gov.serratec.grupo05api.model.Produto;
@@ -16,67 +19,64 @@ import br.gov.serratec.grupo05api.repository.ProdutoRepository;
 
 @Service
 public class ProdutoService {
-	
-	@Autowired
-    private ProdutoRepository produtoRepository;
-	
-	@Autowired
-    private CategoriaRepository categoriaRepository;
 
-	public List<ProdutoDto> obterTodos() {
-        List<Produto> produtos = produtoRepository.findAll();
-        return produtos.stream().map(p -> ProdutoDto.toDto(p)).toList();
-    }
-
-    public ProdutoDto cadastrarProduto(ProdutoCategoriaDto produtoCategoriaDto) {
-    	Categoria categoria = categoriaRepository.findById(produtoCategoriaDto.categoriaId())
-                .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada"));
-
-        Produto produto = produtoCategoriaDto.toEntity(categoria);
-        Produto novoProduto = produtoRepository.save(produto);
-        return ProdutoDto.toDto(novoProduto);
-    }
+    @Autowired
+    private ProdutoRepository produtoRepo;
     
-    public ProdutoDto atualizarProduto(Long id, ProdutoCategoriaDto produtoCategoriaDto) {
-        Optional<Produto> produtoExistente = produtoRepository.findById(id);
-        if (produtoExistente.isPresent()) {
-            Produto produto = produtoExistente.get();
-            produto.setNome(produtoCategoriaDto.nome());
-            produto.setDescricao(produtoCategoriaDto.descricao());
-            produto.setQtdEstoque(produtoCategoriaDto.qtdEstoque());
-            produto.setDataCadastro(produtoCategoriaDto.dataCadastro());
-            produto.setValorUnitario(produtoCategoriaDto.valorUnitario());
-            produto.setImagem(produtoCategoriaDto.imagem());
-            
-            Categoria categoria = categoriaRepository.findById(produtoCategoriaDto.categoriaId())
-                    .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada"));
-            produto.setCategoria(categoria);
+    @Autowired
+    private CategoriaRepository categoriaRepo;
 
-            Produto produtoAtualizado = produtoRepository.save(produto);
-            return ProdutoDto.toDto(produtoAtualizado);
-        } else {
-            return null;
+    public ProdutoDto cadastrar(ProdutoCadastroDto novoProduto) {
+        Optional<Categoria> categoriaOpt = categoriaRepo.findById(novoProduto.idCategoria());
+        if (categoriaOpt.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não cadastrada");
         }
+
+        Produto produto = novoProduto.toEntity(categoriaOpt.get());
+        Produto produtoEntity = produtoRepo.save(produto);
+        return ProdutoDto.toDto(produtoEntity);
     }
-    
-    public Boolean deletarProduto(Long id) {
-        if (produtoRepository.existsById(id)) {
-            produtoRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
+
+    public Optional<ProdutoDto> atualizar(Long id, ProdutoCadastroDto produtoDto) {
+        if (produtoRepo.existsById(id)) {
+            Optional<Categoria> categoriaOpt = categoriaRepo.findById(produtoDto.idCategoria());
+            if (categoriaOpt.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não cadastrada");
+            }
+
+            Produto produtoEntity = produtoRepo.findById(id).orElseThrow(() -> 
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+
+            produtoEntity.setNome(produtoDto.nome());
+            produtoEntity.setDescricao(produtoDto.descricao());
+            produtoEntity.setQtdEstoque(produtoDto.qtdEstoque());
+            produtoEntity.setDataCadastro(produtoDto.dataCadastro());
+            produtoEntity.setValorUnitario(produtoDto.valorUnitario());
+            produtoEntity.setImagem(produtoDto.imagem());
+            produtoEntity.setCategoria(categoriaOpt.get());
+
+            produtoRepo.save(produtoEntity);
+            return Optional.of(ProdutoDto.toDto(produtoEntity));
         }
+        return Optional.empty();
     }
-    
-    public ProdutoDto obterPorId(Long id) {
-        Optional<Produto> produto = produtoRepository.findById(id);
-        return produto.map(ProdutoDto::toDto).orElse(null);
+
+    public void deletar(Long id) {
+        if (!produtoRepo.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado");
+        }
+        produtoRepo.deleteById(id);
+    }
+
+    public Optional<ProdutoDto> buscarPorId(Long id) {
+        return produtoRepo.findById(id).map(ProdutoDto::toDto);
     }
     
     public List<ProdutoDto> buscarPorNomeProduto(String nome) {
-        List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);
+        List<Produto> produtos = produtoRepo.findByNomeContainingIgnoreCase(nome);
         return produtos.stream()
                 .map(ProdutoDto::toDto)
                 .collect(Collectors.toList());
     }
+   
 }

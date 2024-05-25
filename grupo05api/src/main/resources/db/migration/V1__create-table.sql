@@ -34,8 +34,8 @@ CREATE TABLE produto (
     data_cadastro DATE,
     valor_unitario NUMERIC(10,2),
     imagem TEXT,
-    categoria_id INTEGER,
-    FOREIGN KEY (categoria_id) REFERENCES categoria(id)
+    id_categoria INTEGER,
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id)
 );
 
 CREATE TABLE pedido (

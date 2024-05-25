@@ -1,7 +1,6 @@
 package br.gov.serratec.grupo05api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.gov.serratec.grupo05api.model.Categoria;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,8 +9,7 @@ import jakarta.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record CategoriaDto(
-        Long id,
-        
+        Long id,        
         @NotNull(message = "Nome não pode ser nulo")
         @NotEmpty(message = "Nome não pode ser vazio")
         @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
@@ -22,12 +20,17 @@ public record CategoriaDto(
         String descricao) {
 
     public Categoria toEntity() {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(this, Categoria.class);
+        Categoria categoria = new Categoria();
+        categoria.setNome(this.nome);
+        categoria.setDescricao(this.descricao);
+        return categoria;
     }
 
     public static CategoriaDto toDto(Categoria categoriaEntity) {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(categoriaEntity, CategoriaDto.class);
+        return new CategoriaDto(
+        			categoriaEntity.getId(),
+        			categoriaEntity.getNome(),
+        			categoriaEntity.getDescricao()
+        		);
     }
 }

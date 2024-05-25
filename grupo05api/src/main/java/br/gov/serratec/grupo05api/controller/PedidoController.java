@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.validation.Valid;
 
+import br.gov.serratec.grupo05api.dto.PedidoCadastroDto;
 import br.gov.serratec.grupo05api.dto.PedidoDto;
 //import br.gov.serratec.grupo05api.dto.RelatorioDto;
 import br.gov.serratec.grupo05api.service.PedidoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -51,13 +52,13 @@ public class PedidoController {
 	
 	//TODO: Check exceptions
 	@PostMapping
-	public ResponseEntity<PedidoDto> cadastrar(@RequestBody @Valid PedidoDto novoPedido) {
+	public ResponseEntity<PedidoDto> cadastrar(@RequestBody @Valid PedidoCadastroDto novoPedido) {
 		return new ResponseEntity<>(servico.cadastrar(novoPedido), HttpStatus.CREATED);
 	}
 	
 	//TODO: Check exceptions
 	@PutMapping("/{id}")
-	public ResponseEntity<PedidoDto> atualizar(@PathVariable Long id, @RequestBody @Valid PedidoDto pedido) {
+	public ResponseEntity<PedidoDto> atualizar(@PathVariable Long id, @RequestBody @Valid PedidoCadastroDto pedido) {
 		Optional<PedidoDto> pedidoDto = servico.atualizar(id, pedido);
 		
 		if (pedidoDto.isEmpty()) {
