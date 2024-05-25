@@ -33,7 +33,7 @@ CREATE TABLE produto (
     qtd_estoque INTEGER,
     data_cadastro DATE,
     valor_unitario NUMERIC(10,2),
-    imagem BYTEA,
+    imagem TEXT,
     id_categoria INTEGER,
     FOREIGN KEY (id_categoria) REFERENCES categoria(id)
 );

@@ -1,8 +1,8 @@
 package br.gov.serratec.grupo05api.dto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import br.gov.serratec.grupo05api.model.ItemPedido;
+import br.gov.serratec.grupo05api.model.Pedido;
+import br.gov.serratec.grupo05api.model.Produto;
 
 public record ItemPedidoDto(
 		Long id,
@@ -11,17 +11,19 @@ public record ItemPedidoDto(
         Double percentualDesconto,
         Double valorBruto,
         Double valorLiquido,
-        Long idProduto,
-        Long idPedido) {
-	
-	// TODO
-	public ItemPedido toEntity() {
-        
-        return null;
-    }
+        Produto produto,
+        Pedido pedido) {
 
-	//TODO
     public static ItemPedidoDto toDto(ItemPedido itemPedidoEntity) {
-        return null;
+        return new ItemPedidoDto(
+        		itemPedidoEntity.getId(),
+        		itemPedidoEntity.getQuantidade(),
+        		itemPedidoEntity.getPrecoVenda(),
+        		itemPedidoEntity.getPercentualDesconto(),
+        		itemPedidoEntity.getValorBruto(),
+        		itemPedidoEntity.getValorLiquido(),
+        		itemPedidoEntity.getProduto(),
+        		itemPedidoEntity.getPedido()
+        );
     }
 }
