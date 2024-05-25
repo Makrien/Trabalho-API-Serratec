@@ -3,10 +3,9 @@ package br.gov.serratec.grupo05api.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-<<<<<<< HEAD
+
 import java.util.stream.Collectors;
-=======
->>>>>>> origin
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,19 +82,7 @@ public class ProdutoService {
     public List<ProdutoDto> buscarPorNomeProduto(String nome) {
         List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);
         return produtos.stream()
-                       .map(produtoEntity -> new ProdutoDto(
-                                produtoEntity.getId(),
-                                produtoEntity.getNome(),
-                                produtoEntity.getDescricao(),
-                                produtoEntity.getQtdEstoque(),
-                                produtoEntity.getDataCadastro(),
-                                produtoEntity.getValorUnitario(),
-                                produtoEntity.getImagem(),
-<<<<<<< HEAD
-                                CategoriaDto.toDto(produtoEntity.getCategoria())))
-                       .collect(Collectors.toList());
-=======
-                                CategoriaDto.toDto(produtoEntity.getCategoria()))).toList();
->>>>>>> origin
+                .map(ProdutoDto::toDto)
+                .collect(Collectors.toList());
     }
 }
