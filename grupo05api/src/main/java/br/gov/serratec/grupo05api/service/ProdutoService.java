@@ -70,7 +70,7 @@ public class ProdutoService {
     public Optional<ProdutoDto> buscarPorId(Long id) {
         return produtoRepo.findById(id).map(ProdutoDto::toDto);
     }
-
+  
     public List<ProdutoDto> listarTodos() {
         return produtoRepo.findAll().stream()
             .map(ProdutoDto::toDto)
