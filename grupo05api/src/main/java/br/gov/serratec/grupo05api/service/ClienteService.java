@@ -1,9 +1,15 @@
 package br.gov.serratec.grupo05api.service;
 
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,17 +33,16 @@ public class ClienteService {
     @Autowired
     private EmailService emailService;
 
-    public List<ClienteDto> buscarTodos() {
-        return clienteRepository.findAll().stream()
-                .map(c -> new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento().toString(), c.getEndereco()))
-                .toList();
-    }
+    public Page<Cliente> buscarTodos(Pageable pageable)  {
+    		Page<Cliente> c =  clienteRepository.findAll(pageable);
+            return c;       
+        }
 
     public ClienteDto buscarPorId(Long id) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
         if (clienteOptional.isPresent()) {
             Cliente c = clienteOptional.get();
-            return new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento().toString(), c.getEndereco());
+            return new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento(), c.getEndereco());
         }
         return null;
     }
@@ -61,12 +66,13 @@ public class ClienteService {
         return Cliente.toDto(cliente);
     }
 
-    public ClienteDto atualizar(Long id, ClienteDto clienteDto) {
+    public ClienteDto atualizar(Long id, ClienteEnderecoDto c) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        Optional<Endereco> eOptional = enderecoRepository.findById(c.enderecoId());
         if (clienteOptional.isPresent()) {
-            Cliente cliente = clienteDto.toEntity();
-            cliente.setId(id);
-            return Cliente.toDto(clienteRepository.save(cliente));
+            ClienteDto clienteDto = new ClienteDto(id,c.email(),c.nomeCompleto(),
+            		c.cpf(),c.telefone(), c.dataNascimento(),eOptional.get());
+            return Cliente.toDto(clienteRepository.save(clienteDto.toEntity()));
         }
         return null;
     }

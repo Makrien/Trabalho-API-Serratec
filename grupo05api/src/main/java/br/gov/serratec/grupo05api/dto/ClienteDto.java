@@ -9,6 +9,9 @@ import jakarta.validation.constraints.Pattern;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import br.gov.serratec.grupo05api.model.Cliente;
 import br.gov.serratec.grupo05api.model.Endereco;
+import jakarta.validation.constraints.NotBlank;
+
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ClienteDto(
@@ -24,17 +27,18 @@ public record ClienteDto(
         @NotNull(message = "O telefone não deve ser nulo")
         String telefone,
         @NotBlank(message = "A data de nascimento não deve ser nula")
-        String dataNascimento,
+        LocalDate dataNascimento,
         @NotNull(message = "O endereço não deve ser nulo")
         Endereco endereco) {
 
     public Cliente toEntity() {
         Cliente cliente = new Cliente();
+        cliente.setId(this.id);
         cliente.setEmail(this.email);
         cliente.setNomeCompleto(this.nomeCompleto);
         cliente.setCpf(this.cpf);
         cliente.setTelefone(this.telefone);
-        cliente.setDataNascimento(LocalDate.parse(dataNascimento));
+        cliente.setDataNascimento(dataNascimento);
         cliente.setEndereco(this.endereco);
         return cliente;
     }

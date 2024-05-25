@@ -1,84 +1,78 @@
 package br.gov.serratec.grupo05api.service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import br.gov.serratec.grupo05api.dto.CategoriaDto;
+import br.gov.serratec.grupo05api.dto.ProdutoCadastroDto;
 import br.gov.serratec.grupo05api.dto.ProdutoDto;
+import br.gov.serratec.grupo05api.model.Categoria;
 import br.gov.serratec.grupo05api.model.Produto;
+import br.gov.serratec.grupo05api.repository.CategoriaRepository;
 import br.gov.serratec.grupo05api.repository.ProdutoRepository;
 
 @Service
 public class ProdutoService {
-	
-	@Autowired
-    private ProdutoRepository produtoRepository;
 
-	public List<ProdutoDto> obterTodos() {
-        List<Produto> produtos = produtoRepository.findAll();
-        List<ProdutoDto> produtoDtos = new ArrayList<>();
-        for (Produto produto : produtos) {
-            ProdutoDto produtoDto = new ProdutoDto(
-                    produto.getId(),
-                    produto.getNome(),
-                    produto.getDescricao(),
-                    produto.getQtdEstoque(),
-                    produto.getDataCadastro().toString(),
-                    produto.getValorUnitario(),
-                    produto.getImagem(),
-                    CategoriaDto.toDto(produto.getCategoria())
-            );
-            produtoDtos.add(produtoDto);
+    @Autowired
+    private ProdutoRepository produtoRepo;
+    
+    @Autowired
+    private CategoriaRepository categoriaRepo;
+
+    public ProdutoDto cadastrar(ProdutoCadastroDto novoProduto) {
+        Optional<Categoria> categoriaOpt = categoriaRepo.findById(novoProduto.idCategoria());
+        if (categoriaOpt.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não cadastrada");
         }
-        return produtoDtos;
+
+        Produto produto = novoProduto.toEntity(categoriaOpt.get());
+        Produto produtoEntity = produtoRepo.save(produto);
+        return ProdutoDto.toDto(produtoEntity);
     }
 
-    public ProdutoDto cadastrarProduto(ProdutoDto produtoDto) {
-        Produto produto = produtoDto.toEntity();
-        Produto novoProduto = produtoRepository.save(produto);
-        return ProdutoDto.toDto(novoProduto);
-    }
-    
-    public ProdutoDto atualizarProduto(Long id, ProdutoDto produtoDto) {
-        Optional<Produto> produtoExistente = produtoRepository.findById(id);
-        if (produtoExistente.isPresent()) {
-            Produto produto = produtoExistente.get();
-            produto.setNome(produtoDto.nome());
-            produto.setDescricao(produtoDto.descricao());
-            produto.setQtdEstoque(produtoDto.qtdEstoque());
-            produto.setDataCadastro(LocalDate.parse(produtoDto.dataCadastro()));
-            produto.setValorUnitario(produtoDto.valorUnitario());
-            produto.setImagem(produtoDto.imagem());
-            produto.setCategoria(produtoDto.categoria().toEntity());
-            Produto produtoAtualizado = produtoRepository.save(produto);
-            return ProdutoDto.toDto(produtoAtualizado);
-        } else {
-            return null;
+    public Optional<ProdutoDto> atualizar(Long id, ProdutoCadastroDto produtoDto) {
+        if (produtoRepo.existsById(id)) {
+            Optional<Categoria> categoriaOpt = categoriaRepo.findById(produtoDto.idCategoria());
+            if (categoriaOpt.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria não cadastrada");
+            }
+
+            Produto produtoEntity = produtoRepo.findById(id).orElseThrow(() -> 
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+
+            produtoEntity.setNome(produtoDto.nome());
+            produtoEntity.setDescricao(produtoDto.descricao());
+            produtoEntity.setQtdEstoque(produtoDto.qtdEstoque());
+            produtoEntity.setDataCadastro(produtoDto.dataCadastro());
+            produtoEntity.setValorUnitario(produtoDto.valorUnitario());
+            produtoEntity.setImagem(produtoDto.imagem());
+            produtoEntity.setCategoria(categoriaOpt.get());
+
+            produtoRepo.save(produtoEntity);
+            return Optional.of(ProdutoDto.toDto(produtoEntity));
         }
+        return Optional.empty();
     }
-    
-    public Boolean deletarProduto(Long id) {
-        if (produtoRepository.existsById(id)) {
-            produtoRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
+
+    public void deletar(Long id) {
+        if (!produtoRepo.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado");
         }
+        produtoRepo.deleteById(id);
     }
-    
-    public ProdutoDto obterPorId(Long id) {
-        Optional<Produto> produto = produtoRepository.findById(id);
-        return produto.map(ProdutoDto::toDto).orElse(null);
+
+    public Optional<ProdutoDto> buscarPorId(Long id) {
+        return produtoRepo.findById(id).map(ProdutoDto::toDto);
     }
     
     public List<ProdutoDto> buscarPorNomeProduto(String nome) {
-        List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);
+        List<Produto> produtos = produtoRepo.findByNomeContainingIgnoreCase(nome);
         return produtos.stream()
                        .map(produtoEntity -> new ProdutoDto(
                                 produtoEntity.getId(),
@@ -90,6 +84,11 @@ public class ProdutoService {
                                 produtoEntity.getImagem(),
                                 CategoriaDto.toDto(produtoEntity.getCategoria())))
                        .collect(Collectors.toList());
+  
+    public List<ProdutoDto> listarTodos() {
+        return produtoRepo.findAll().stream()
+            .map(ProdutoDto::toDto)
+            .collect(Collectors.toList());
     }
    
 }

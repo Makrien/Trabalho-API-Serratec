@@ -3,6 +3,9 @@ package br.gov.serratec.grupo05api.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,12 +27,12 @@ public class Pedido {
 	private LocalDate dataEnvio;
 	private String status;
 	private Double valorTotal;
-
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@OneToMany(mappedBy = "pedido")
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	List<ItemPedido> itensPedido;
 
 	public Pedido() {}
