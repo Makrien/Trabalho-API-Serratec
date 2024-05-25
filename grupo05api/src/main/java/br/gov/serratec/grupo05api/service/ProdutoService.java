@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import br.gov.serratec.grupo05api.dto.ProdutoCadastroDto;
 import br.gov.serratec.grupo05api.dto.ProdutoDto;
 import br.gov.serratec.grupo05api.model.Categoria;
@@ -74,21 +75,8 @@ public class ProdutoService {
     public List<ProdutoDto> buscarPorNomeProduto(String nome) {
         List<Produto> produtos = produtoRepo.findByNomeContainingIgnoreCase(nome);
         return produtos.stream()
-                       .map(produtoEntity -> new ProdutoDto(
-                                produtoEntity.getId(),
-                                produtoEntity.getNome(),
-                                produtoEntity.getDescricao(),
-                                produtoEntity.getQtdEstoque(),
-                                produtoEntity.getDataCadastro().toString(),
-                                produtoEntity.getValorUnitario(),
-                                produtoEntity.getImagem(),
-                                CategoriaDto.toDto(produtoEntity.getCategoria())))
-                       .collect(Collectors.toList());
-  
-    public List<ProdutoDto> listarTodos() {
-        return produtoRepo.findAll().stream()
-            .map(ProdutoDto::toDto)
-            .collect(Collectors.toList());
+                .map(ProdutoDto::toDto)
+                .collect(Collectors.toList());
     }
    
 }

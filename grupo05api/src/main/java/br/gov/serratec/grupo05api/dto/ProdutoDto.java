@@ -2,8 +2,12 @@ package br.gov.serratec.grupo05api.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import br.gov.serratec.grupo05api.config.Mapper;
 import br.gov.serratec.grupo05api.model.Produto;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record ProdutoDto(
 		Long id,
         String nome,
@@ -15,16 +19,7 @@ public record ProdutoDto(
         CategoriaDto categoria) {
 
 	public static ProdutoDto toDto(Produto produtoEntity) {
-        return new ProdutoDto(
-                produtoEntity.getId(),
-                produtoEntity.getNome(),
-                produtoEntity.getDescricao(),
-                produtoEntity.getQtdEstoque(),
-                produtoEntity.getDataCadastro(),
-                produtoEntity.getValorUnitario(),
-                produtoEntity.getImagem(),
-                CategoriaDto.toDto(produtoEntity.getCategoria())
-        );
+		return Mapper.getMapper().convertValue(produtoEntity, ProdutoDto.class);
     }
 
 }

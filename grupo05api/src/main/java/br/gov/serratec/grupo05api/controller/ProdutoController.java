@@ -32,13 +32,13 @@ public class ProdutoController {
     }
     
     @PostMapping
-    public ResponseEntity<ProdutoDto> cadastrar(@RequestBody ProdutoCadastroDto novoProduto) {
+    public ResponseEntity<ProdutoDto> cadastrar(@Valid @RequestBody ProdutoCadastroDto novoProduto) {
         ProdutoDto produtoDto = produtoService.cadastrar(novoProduto);
         return ResponseEntity.status(201).body(produtoDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoDto> atualizar(@PathVariable Long id, @RequestBody ProdutoCadastroDto produtoDto) {
+    public ResponseEntity<ProdutoDto> atualizar(@PathVariable Long id, @Valid @RequestBody ProdutoCadastroDto produtoDto) {
         Optional<ProdutoDto> atualizado = produtoService.atualizar(id, produtoDto);
         return atualizado.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
