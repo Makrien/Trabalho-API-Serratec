@@ -33,18 +33,10 @@ public class ClienteService {
     @Autowired
     private EmailService emailService;
 
-<<<<<<< HEAD
     public Page<Cliente> buscarTodos(Pageable pageable)  {
     		Page<Cliente> c =  clienteRepository.findAll(pageable);
             return c;       
         }
-=======
-    public List<ClienteDto> buscarTodos() {
-        return clienteRepository.findAll().stream()
-                .map(c -> new ClienteDto(c.getId(), c.getEmail(), c.getNomeCompleto(), c.getCpf(), c.getTelefone(), c.getDataNascimento(), c.getEndereco()))
-                .toList();
-    }
->>>>>>> origin
 
     public ClienteDto buscarPorId(Long id) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
