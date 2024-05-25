@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.gov.serratec.grupo05api.config.Mapper;
 import br.gov.serratec.grupo05api.model.Cliente;
-import br.gov.serratec.grupo05api.model.ItemPedido;
 import br.gov.serratec.grupo05api.model.Pedido;
 
 public record PedidoDto(Long id,
@@ -15,7 +14,7 @@ public record PedidoDto(Long id,
         String status,
         Double valorTotal,
         Cliente cliente,
-        List<ItemPedido> itensPedido) {
+        List<ItemPedidoDto> itensPedido) {
 
 	public Pedido toEntity() {
         Pedido pedido = new Pedido();
@@ -25,7 +24,7 @@ public record PedidoDto(Long id,
         pedido.setStatus(this.status);
         pedido.setValorTotal(this.valorTotal);
         pedido.setCliente(this.cliente);
-        pedido.setItensPedido(this.itensPedido);
+        pedido.setItensPedido(this.itensPedido.stream().map(i -> i.toEntity()).toList());
         return pedido;
     }
 

@@ -1,5 +1,14 @@
 package br.gov.serratec.grupo05api.controller;
 
+<<<<<<< HEAD
+=======
+import java.util.List;
+
+import br.gov.serratec.grupo05api.dto.ClienteDto;
+import br.gov.serratec.grupo05api.service.ClienteService;
+import jakarta.validation.Valid;
+
+>>>>>>> origin
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +24,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.gov.serratec.grupo05api.dto.ClienteDto;
 import br.gov.serratec.grupo05api.dto.ClienteEnderecoDto;
+<<<<<<< HEAD
 import br.gov.serratec.grupo05api.model.Cliente;
 import br.gov.serratec.grupo05api.service.ClienteService;
 import jakarta.validation.Valid;
+=======
+>>>>>>> origin
 
 @RestController
 @RequestMapping("/clientes")

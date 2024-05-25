@@ -26,7 +26,7 @@ public record ProdutoDto(
         Long qtdEstoque,
         
         @NotNull(message = "Data de cadastro não pode ser nula")
-        String dataCadastro,
+        LocalDate dataCadastro,
         
         @NotNull(message = "Valor unitário não pode ser nulo")
         @Positive(message = "Valor unitário deve ser positivo")
@@ -41,7 +41,7 @@ public record ProdutoDto(
         produto.setNome(nome);
         produto.setDescricao(descricao);
         produto.setQtdEstoque(qtdEstoque);
-        produto.setDataCadastro(LocalDate.parse(this.dataCadastro));
+        produto.setDataCadastro(this.dataCadastro);
         produto.setValorUnitario(this.valorUnitario);
         produto.setImagem(this.imagem);
         if (this.categoria != null) {
@@ -57,7 +57,7 @@ public record ProdutoDto(
                 produtoEntity.getNome(),
                 produtoEntity.getDescricao(),
                 produtoEntity.getQtdEstoque(),
-                produtoEntity.getDataCadastro().toString(),
+                produtoEntity.getDataCadastro(),
                 produtoEntity.getValorUnitario(),
                 produtoEntity.getImagem(),
                 CategoriaDto.toDto(produtoEntity.getCategoria())

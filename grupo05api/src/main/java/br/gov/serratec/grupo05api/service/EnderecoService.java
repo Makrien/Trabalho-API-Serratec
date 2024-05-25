@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.gov.serratec.grupo05api.dto.EnderecoCadastroDto;
 import br.gov.serratec.grupo05api.dto.EnderecoDto;
 import br.gov.serratec.grupo05api.model.Endereco;
 import br.gov.serratec.grupo05api.repository.EnderecoRepository;
@@ -17,6 +18,9 @@ public class EnderecoService {
 	@Autowired
 	private EnderecoRepository repositorio;
 	
+	@Autowired
+	private ConverteDados conversor;
+	
 	public List<EnderecoDto> obterTodos() {
 		List<EnderecoDto> enderecos = new ArrayList<>();
 		repositorio.findAll().forEach(e -> {
@@ -25,9 +29,23 @@ public class EnderecoService {
 		return enderecos;
 	}
 	
-	public EnderecoDto cadastrarEndereco(EnderecoDto novoEndereco) {
-		 Endereco enderecoSalvo = repositorio.save(novoEndereco.toEntity());
-	        return enderecoSalvo.toDto();
+	public EnderecoDto cadastrarEndereco(EnderecoCadastroDto enderecoCadastro) {
+		String json = ConsumoApi.obterDados(enderecoCadastro.cep());
+		EnderecoDto endereco = conversor.converter(json, EnderecoDto.class);
+		
+		EnderecoDto novoEndereco = new EnderecoDto(
+				endereco.id(),
+				endereco.cep(),
+				endereco.rua(),
+				endereco.bairro(), 
+				endereco.cidade(), 
+				enderecoCadastro.numero(), 
+				enderecoCadastro.complemento(), 
+				endereco.uf(), 
+				endereco.cliente()); 
+		
+		Endereco enderecoSalvo = repositorio.save(novoEndereco.toEntity());
+	    return enderecoSalvo.toDto();
 	}
 	
 	public Optional<EnderecoDto> atualizarEndereco(Long id, EnderecoDto enderecoAtualizado) {

@@ -1,25 +1,22 @@
 package br.gov.serratec.grupo05api.dto;
 
-import br.gov.serratec.grupo05api.model.Endereco;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import br.gov.serratec.grupo05api.model.Cliente;
+import br.gov.serratec.grupo05api.model.Endereco;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record EnderecoDto(
 		 Long id,
-		 @NotBlank(message = "O campo CEP é obrigatório!")
 		 String cep,
-		 @NotBlank(message = "Informe o nome da rua!")
-		 String rua,
-		 @NotBlank(message = "Informe o nome do bairro!")
+		 @JsonAlias("logradouro") String rua,
 		 String bairro,
-		 @NotBlank(message = "Informe o nome da cidade!")
-		 String cidade,
-		 @NotNull(message = "Informe o número da residência!")
+		 @JsonAlias("localidade") String cidade,
 		 int numero,
-		 @NotBlank(message = "Informe um complemento!")
 		 String complemento,
-		 @NotBlank(message = "Informe uma UF!")
-		 String uf
+		 String uf,
+		 Cliente cliente
 		 ) {
 
 	public Endereco toEntity() {
@@ -27,5 +24,4 @@ public record EnderecoDto(
 				this.cidade, this.numero, this.complemento, this.uf);
 	}
 
-	
 }
