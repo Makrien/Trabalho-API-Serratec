@@ -1,7 +1,6 @@
 package br.gov.serratec.grupo05api.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import br.gov.serratec.grupo05api.model.ItemPedido;
 
 public record ItemPedidoDto(
@@ -22,4 +21,16 @@ public record ItemPedidoDto(
         ObjectMapper mapper = new ObjectMapper();
         return mapper.convertValue(itemPedidoEntity, ItemPedidoDto.class);
     }
+    
+    public ItemRelatorioDto toItemRelatorio() {
+		  return new ItemRelatorioDto(
+				  this.id,
+				  this.produto.nome(),
+				  this.precoVenda,
+				  this.quantidade,
+				  this.valorBruto,
+				  this.percentualDesconto,
+				  this.valorLiquido
+				  );
+	  }
 }
