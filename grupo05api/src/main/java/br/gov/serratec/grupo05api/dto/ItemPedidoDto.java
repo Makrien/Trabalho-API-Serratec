@@ -30,7 +30,7 @@ public record ItemPedidoDto(
     public ItemRelatorioDto toItemRelatorio() {
 		  return new ItemRelatorioDto(
 				  this.id,
-				  this.produto.nome(),
+				  this.produto.getNome(),
 				  this.precoVenda,
 				  this.quantidade,
 				  this.valorBruto,

@@ -74,16 +74,9 @@ public class ProdutoService {
     public List<ProdutoDto> buscarPorNomeProduto(String nome) {
         List<Produto> produtos = produtoRepo.findByNomeContainingIgnoreCase(nome);
         return produtos.stream()
-                       .map(produtoEntity -> new ProdutoDto(
-                                produtoEntity.getId(),
-                                produtoEntity.getNome(),
-                                produtoEntity.getDescricao(),
-                                produtoEntity.getQtdEstoque(),
-                                produtoEntity.getDataCadastro().toString(),
-                                produtoEntity.getValorUnitario(),
-                                produtoEntity.getImagem(),
-                                CategoriaDto.toDto(produtoEntity.getCategoria())))
-                       .collect(Collectors.toList());
+                .map(ProdutoDto::toDto)
+                .collect(Collectors.toList());
+    }
   
     public List<ProdutoDto> listarTodos() {
         return produtoRepo.findAll().stream()

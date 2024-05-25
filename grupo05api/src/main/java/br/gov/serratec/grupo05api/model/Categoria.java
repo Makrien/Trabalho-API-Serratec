@@ -20,8 +20,8 @@ public class Categoria {
 	private String nome;
 	private String descricao;
 	
-	@OneToMany(mappedBy = "categoria")
-	private List<Produto> produto;
+	//@OneToMany(mappedBy = "categoria")
+	//private List<Produto> produto;
 
 	
 	public Categoria() {
@@ -33,7 +33,7 @@ public class Categoria {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
-		this.produto = produto;
+		//this.produto = produto;
 	}
 
 	public Long getId() {
@@ -60,13 +60,13 @@ public class Categoria {
 		this.descricao = descricao;
 	}
 
-	public List<Produto> getProduto() {
-		return produto;
-	}
+	//public List<Produto> getProduto() {
+	//	return produto;
+	//}
 
-	public void setProduto(List<Produto> produto) {
-		this.produto = produto;
-	}
+	//public void setProduto(List<Produto> produto) {
+	//	this.produto = produto;
+	//}
 	
 	
 	
