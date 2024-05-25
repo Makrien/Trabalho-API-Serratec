@@ -35,7 +35,6 @@ public class ClienteService {
             return c;       
         }
 
-
     public ClienteDto buscarPorId(Long id) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
         if (clienteOptional.isPresent()) {

@@ -1,8 +1,6 @@
 package br.gov.serratec.grupo05api.controller;
 
-import java.util.List;
 
-import br.gov.serratec.grupo05api.config.SwaggerConfig;
 import br.gov.serratec.grupo05api.dto.ClienteDto;
 import br.gov.serratec.grupo05api.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
