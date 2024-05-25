@@ -26,4 +26,16 @@ public record ItemPedidoDto(
         		itemPedidoEntity.getPedido()
         );
     }
+    
+    public ItemRelatorioDto toItemRelatorio() {
+		  return new ItemRelatorioDto(
+				  this.id,
+				  this.produto.nome(),
+				  this.precoVenda,
+				  this.quantidade,
+				  this.valorBruto,
+				  this.percentualDesconto,
+				  this.valorLiquido
+				  );
+	  }
 }
