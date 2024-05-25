@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.gov.serratec.grupo05api.dto.ProdutoCategoriaDto;
 import br.gov.serratec.grupo05api.dto.ProdutoDto;
 import br.gov.serratec.grupo05api.service.ProdutoService;
 import jakarta.validation.Valid;
@@ -52,14 +53,14 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoDto> cadastrarProduto(@Valid @RequestBody ProdutoDto produtoDto) {
-        ProdutoDto novoProduto = produtoService.cadastrarProduto(produtoDto);
-        return ResponseEntity.ok(novoProduto);
+    public ResponseEntity<ProdutoDto> cadastrarProduto(@Valid @RequestBody ProdutoCategoriaDto produtoCategoriaDto) {
+		ProdutoDto novoProduto = produtoService.cadastrarProduto(produtoCategoriaDto);
+	    return ResponseEntity.ok(novoProduto);
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoDto> atualizarProduto(@PathVariable Long id, @Valid @RequestBody ProdutoDto produtoDto) {
-        ProdutoDto produtoAtualizado = produtoService.atualizarProduto(id, produtoDto);
+    public ResponseEntity<ProdutoDto> atualizarProduto(@PathVariable Long id, @Valid @RequestBody ProdutoCategoriaDto produtoCategoriaDto) {
+    	ProdutoDto produtoAtualizado = produtoService.atualizarProduto(id, produtoCategoriaDto);
         if (produtoAtualizado == null) {
             return ResponseEntity.notFound().build();
         } else {

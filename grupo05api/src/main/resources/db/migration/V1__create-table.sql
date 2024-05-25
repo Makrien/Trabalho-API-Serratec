@@ -33,9 +33,9 @@ CREATE TABLE produto (
     qtd_estoque INTEGER,
     data_cadastro DATE,
     valor_unitario NUMERIC(10,2),
-    imagem BYTEA,
-    id_categoria INTEGER,
-    FOREIGN KEY (id_categoria) REFERENCES categoria(id)
+    imagem TEXT,
+    categoria_id INTEGER,
+    FOREIGN KEY (categoria_id) REFERENCES categoria(id)
 );
 
 CREATE TABLE pedido (

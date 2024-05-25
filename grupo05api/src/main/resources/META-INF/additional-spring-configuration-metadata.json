@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "spring.jpa.format-sql",
-  "type": "java.lang.String",
-  "description": "A description for 'spring.jpa.format-sql'"
-}]}
+{"properties": [
+  {
+    "name": "spring.jpa.format-sql",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.format-sql'"
+  },
+  {
+    "name": "hibernate.dialect",
+    "type": "java.lang.String",
+    "description": "A description for 'hibernate.dialect'"
+  }
+]}
