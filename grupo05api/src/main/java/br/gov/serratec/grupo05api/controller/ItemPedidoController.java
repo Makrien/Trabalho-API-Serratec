@@ -18,6 +18,19 @@ public class ItemPedidoController {
     @Autowired
     private ItemPedidoService itemPedidoService;
 
+    @GetMapping
+    public ResponseEntity<List<ItemPedidoDto>> listarTodos() {
+        List<ItemPedidoDto> itensPedido = itemPedidoService.listarTodos();
+        return ResponseEntity.ok(itensPedido);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemPedidoDto> buscarPorId(@PathVariable Long id) {
+        Optional<ItemPedidoDto> itemPedidoDto = itemPedidoService.buscarPorId(id);
+        return itemPedidoDto.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
     @PostMapping
     public ResponseEntity<ItemPedidoDto> cadastrar(@RequestBody ItemPedidoCadastroDto novoItemPedido) {
         ItemPedidoDto itemPedidoDto = itemPedidoService.cadastrar(novoItemPedido);
@@ -35,18 +48,5 @@ public class ItemPedidoController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         itemPedidoService.deletar(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ItemPedidoDto> buscarPorId(@PathVariable Long id) {
-        Optional<ItemPedidoDto> itemPedidoDto = itemPedidoService.buscarPorId(id);
-        return itemPedidoDto.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ItemPedidoDto>> listarTodos() {
-        List<ItemPedidoDto> itensPedido = itemPedidoService.listarTodos();
-        return ResponseEntity.ok(itensPedido);
     }
 }
