@@ -2,9 +2,10 @@ package br.gov.serratec.grupo05api.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import br.gov.serratec.grupo05api.config.Mapper;
 import br.gov.serratec.grupo05api.model.Cliente;
+import br.gov.serratec.grupo05api.model.ItemPedido;
 import br.gov.serratec.grupo05api.model.Pedido;
 
 public record PedidoDto(Long id,
@@ -13,22 +14,35 @@ public record PedidoDto(Long id,
         LocalDate dataEnvio,
         String status,
         Double valorTotal,
-        Cliente cliente,
-        List<ItemPedidoDto> itensPedido) {
+        Long idCliente,
+        List<Long> idsItemPedido) {
 
-	public Pedido toEntity() {
+	public Pedido toEntity(Cliente cliente, List<ItemPedido> itens) {
         Pedido pedido = new Pedido();
         pedido.setDataPedido(this.dataPedido);
         pedido.setDataEntrega(this.dataEntrega);
         pedido.setDataEnvio(this.dataEnvio);
         pedido.setStatus(this.status);
         pedido.setValorTotal(this.valorTotal);
-        pedido.setCliente(this.cliente);
-        pedido.setItensPedido(this.itensPedido.stream().map(i -> i.toEntity()).toList());
+        pedido.setCliente(cliente);
+        pedido.setItensPedido(itens);
         return pedido;
     }
 
     public static PedidoDto toDto(Pedido pedidoEntity) {
-        return Mapper.getMapper().convertValue(pedidoEntity, PedidoDto.class);
+        List<Long> itemIds = pedidoEntity.getItensPedido().stream()
+        		.map(ItemPedido::getId)
+        		.collect(Collectors.toList());
+        
+        return new PedidoDto(
+        		pedidoEntity.getId(),
+        		pedidoEntity.getDataPedido(),
+        		pedidoEntity.getDataEntrega(),
+        		pedidoEntity.getDataEnvio(),
+        		pedidoEntity.getStatus(),
+        		pedidoEntity.getValorTotal(),
+        		pedidoEntity.getCliente().getId(),
+        		itemIds
+        );
     }
 }

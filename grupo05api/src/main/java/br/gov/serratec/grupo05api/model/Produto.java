@@ -28,7 +28,7 @@ public class Produto {
 	private String imagem;
 	
 	@ManyToOne
-	@JoinColumn(name = "categoria_id")
+	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
 	
 	@OneToMany(mappedBy = "produto")
