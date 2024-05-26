@@ -31,8 +31,10 @@ public class Produto {
 	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
 	
+
 //	@OneToMany(mappedBy = "produto")
 //	private List<ItemPedido> itemPedido = new ArrayList<>();
+
 	
 
 	public Produto() {
@@ -52,7 +54,6 @@ public class Produto {
 		this.categoria = categoria;
 //		this.itemPedido = new ArrayList<>();
 	}
-
 	public Long getId() {
 		return id;
 	}
@@ -110,12 +111,14 @@ public class Produto {
 	}
 
 //	public List<ItemPedido> getItemPedido() {
+
 //		return itemPedido;
 //	}
 //
 //	public void setItemPedido(List<ItemPedido> itemPedido) {
 //		this.itemPedido = itemPedido;
 //	}
+
 
 	public Categoria getCategoria() {
 		return categoria;

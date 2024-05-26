@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.serratec.grupo05api.model.Cliente;
-
 import br.gov.serratec.grupo05api.model.Pedido;
 
 public record PedidoDto(Long id,
@@ -28,11 +27,11 @@ public record PedidoDto(Long id,
 	    );
 	}
   
-  public PedidoRelatorioDto toRelatorio() {
+  public PedidoRelatorioDto toRelatorio(List<ItemPedidoDto> itensPedido) {
 		
 		List<ItemRelatorioDto> itensRelatorio = new ArrayList<>();
 		
-		this.itensPedido.forEach(i -> {
+		itensPedido.forEach(i -> {
 			itensRelatorio.add(i.toItemRelatorio());
 		});
 		  
@@ -43,4 +42,5 @@ public record PedidoDto(Long id,
 				itensRelatorio
 				);	
 	}
+
 }

@@ -9,11 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.gov.serratec.grupo05api.dto.ItemPedidoDto;
 import br.gov.serratec.grupo05api.dto.PedidoCadastroDto;
 import br.gov.serratec.grupo05api.dto.PedidoDto;
+import br.gov.serratec.grupo05api.dto.PedidoRelatorioDto;
 import br.gov.serratec.grupo05api.model.Cliente;
 import br.gov.serratec.grupo05api.model.Pedido;
 import br.gov.serratec.grupo05api.repository.ClienteRepository;
+import br.gov.serratec.grupo05api.repository.ItemPedidoRepository;
 import br.gov.serratec.grupo05api.repository.PedidoRepository;
 import jakarta.validation.Valid;
 
@@ -22,6 +25,9 @@ public class PedidoService {
 
 	@Autowired
 	private PedidoRepository pedidoRepo;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepo;
 	
 	@Autowired
 	private ClienteRepository clienteRepo;
@@ -80,13 +86,31 @@ public class PedidoService {
 		if (pedidoEntity.isEmpty()) {
 			return false;
 		}
+<<<<<<< HEAD
 //		pedidoEntity.get().getItensPedido().clear();
+=======
+		//pedidoEntity.get().getItensPedido().clear();
+>>>>>>> 9fe07de40bc7cc6d9a22904a96b1650163fe0a7a
 		pedidoRepo.save(pedidoEntity.get());
 		pedidoRepo.excluirPedido(id);
 		return true;
 	}
 
+	  public List<PedidoRelatorioDto> buscarRelatorioPedidos() {
+	        List<Pedido> pedidos = pedidoRepo.findAll();
 
+	        return pedidos.stream()
+	                .map(pedido -> {
+	                    PedidoDto pedidoDto = PedidoDto.toDto(pedido);
+	                    List<ItemPedidoDto> itensPedidoDto = itemPedidoRepo.findById(pedido.getId())
+	                            .stream()
+	                            .map(ItemPedidoDto::toDto)
+	                            .collect(Collectors.toList());
+	                    return pedidoDto.toRelatorio(itensPedidoDto);
+	                })
+	                .collect(Collectors.toList());
+	    }
+	  }
 	
-	
-}
+
+

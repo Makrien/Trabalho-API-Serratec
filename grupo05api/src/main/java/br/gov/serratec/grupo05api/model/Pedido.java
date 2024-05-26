@@ -32,9 +32,9 @@ public class Pedido {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-	List<ItemPedido> itensPedido;
+
+	//@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+	//List<ItemPedido> itensPedido;
 
 	public Pedido() {}
 
@@ -48,7 +48,7 @@ public class Pedido {
 		this.status = status;
 		this.valorTotal = valorTotal;
 		this.cliente = cliente;
-//		this.itensPedido = itensPedido;
+		//this.itensPedido = itensPedido;
 	}
 
 	public Long getId() {
@@ -107,6 +107,7 @@ public class Pedido {
 		this.cliente = cliente;
 	}
 
+
 //	public List<ItemPedido> getItensPedido() {
 //		return itensPedido;
 //	}
@@ -114,4 +115,5 @@ public class Pedido {
 //	public void setItensPedido(List<ItemPedido> itensPedido) {
 //		this.itensPedido = itensPedido;
 //	}
+
 }
