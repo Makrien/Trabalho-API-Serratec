@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import br.gov.serratec.grupo05api.dto.ProdutoCadastroDto;
 import br.gov.serratec.grupo05api.dto.ProdutoDto;
 import br.gov.serratec.grupo05api.model.Categoria;
@@ -79,6 +80,7 @@ public class ProdutoService {
         return produtos.stream()
                 .map(ProdutoDto::toDto)
                 .collect(Collectors.toList());
+
     }
   
     public List<ProdutoDto> listarTodos() {
@@ -87,4 +89,5 @@ public class ProdutoService {
             .collect(Collectors.toList());
 
     }
+   
 }

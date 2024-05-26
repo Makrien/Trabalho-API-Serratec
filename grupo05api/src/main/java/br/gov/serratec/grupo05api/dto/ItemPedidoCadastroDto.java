@@ -1,16 +1,15 @@
 package br.gov.serratec.grupo05api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import br.gov.serratec.grupo05api.model.ItemPedido;
 import br.gov.serratec.grupo05api.model.Pedido;
 import br.gov.serratec.grupo05api.model.Produto;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record ItemPedidoCadastroDto(
 			Long id,
 			int quantidade,
-			Double precoVenda,
 			Double percentualDesconto,
-			Double valorBruto,
-			Double valorLiquido,
 			Long idProduto,
 			Long idPedido
 		) {
@@ -19,10 +18,7 @@ public record ItemPedidoCadastroDto(
 		ItemPedido item = new ItemPedido();
 		item.setId(this.id);
 		item.setQuantidade(this.quantidade);
-		item.setPrecoVenda(this.precoVenda);
 		item.setPercentualDesconto(this.percentualDesconto);
-		item.setValorBruto(this.valorBruto);
-		item.setValorLiquido(this.valorLiquido);
 		item.setProduto(produto);
 		item.setPedido(pedido);
 		return item;

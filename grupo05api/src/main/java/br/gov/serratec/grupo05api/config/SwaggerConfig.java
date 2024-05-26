@@ -1,6 +1,5 @@
 package br.gov.serratec.grupo05api.config;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -15,33 +14,27 @@ import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class SwaggerConfig {
-@Value("${grupo05api.swagger.dev-url}")
-private String devUrl;
-@Bean
-public OpenAPI myOpenAPI() {
-Server devServer = new Server();
-devServer.setUrl(devUrl);
-devServer.setDescription("Server URL - Ambiente Desenvolvimento");
+	@Value("${grupo05api.swagger.dev-url}")
+	private String devUrl;
 
-Contact contact = new Contact();
-contact.setName("GRUPO 5 ");
-contact.setEmail("");
-contact.setUrl("");
+	@Bean
+	public OpenAPI myOpenAPI() {
+		Server devServer = new Server();
+		devServer.setUrl(devUrl);
+		devServer.setDescription("Server URL - Ambiente Desenvolvimento");
 
-License license = new License()
-.name("Apache license version 2.0")
-.url("https://www.apache.org/license/LICENSE-2.0");
+		Contact contact = new Contact();
+		contact.setName("GRUPO 5 ");
+		contact.setEmail("trabalhoserratec312@gmail.com");
+		contact.setUrl("");
 
-Info info = new Info()
-.title("Documentação API - ECOMMERCE")
-.version("1.0.0")
-.contact(contact)
-.license(license)
-.termsOfService("https://www.example.com/terms");
+		License license = new License().name("Apache license version 2.0")
+				.url("https://www.apache.org/license/LICENSE-2.0");
 
+		Info info = new Info().title("Documentação API - Grupo05").version("1.0.0").contact(contact).license(license)
+				.termsOfService("https://www.example.com/terms");
 
-return new OpenAPI().info(info).servers(List.of(devServer));
+		return new OpenAPI().info(info).servers(List.of(devServer));
 
-
-}
+	}
 }
