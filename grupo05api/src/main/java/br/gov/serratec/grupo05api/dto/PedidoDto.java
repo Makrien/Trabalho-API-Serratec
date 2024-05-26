@@ -31,14 +31,18 @@ public record PedidoDto(Long id,
 		
 		List<ItemRelatorioDto> itensRelatorio = new ArrayList<>();
 		
+		
 		itensPedido.forEach(i -> {
 			itensRelatorio.add(i.toItemRelatorio());
 		});
+		
 		  
 		return new PedidoRelatorioDto(
 				this.id,
+				this.cliente,
 				this.dataPedido,
 				this.valorTotal,
+				this.status,
 				itensRelatorio
 				);	
 	}
