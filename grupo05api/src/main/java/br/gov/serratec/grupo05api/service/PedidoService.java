@@ -1,9 +1,6 @@
 package br.gov.serratec.grupo05api.service;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,14 +48,12 @@ public class PedidoService {
 		}
 		return Optional.of(PedidoDto.toDto(pedidoEntity.get()));
 	}
-	
-	public PedidoDto cadastrar(@Valid PedidoDto novoPedido) {
+
+	public PedidoDto cadastrar(@Valid PedidoCadastroDto novoPedido) {
 		 LocalDate dataAtual = LocalDate.now();		
 		 if (novoPedido.dataPedido().isBefore(dataAtual)) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data não pode ser retroativa à atual.");
-		}
-
-	public PedidoDto cadastrar(@Valid PedidoCadastroDto novoPedido) {
+		 }
 		Optional<Cliente> clienteOpt = clienteRepo.findById(novoPedido.idCliente());
 		if (clienteOpt.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente não cadastrado.");
@@ -153,6 +148,5 @@ public class PedidoService {
 	    	return null;
 	    }
 	}
-	  }
-	
 }
+
