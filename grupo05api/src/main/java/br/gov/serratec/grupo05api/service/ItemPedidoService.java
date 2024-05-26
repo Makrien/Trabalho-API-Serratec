@@ -37,6 +37,7 @@ public class ItemPedidoService {
         if(itemPedidoRepo.existeProduto(novoItemPedido.idPedido(), novoItemPedido.idProduto())) {
         	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto já cadastrado no pedido");
         }
+        
         if (produtoOpt.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto não cadastrado");
         }
