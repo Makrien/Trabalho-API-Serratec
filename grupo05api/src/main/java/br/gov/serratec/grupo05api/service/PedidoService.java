@@ -22,7 +22,10 @@ import jakarta.validation.Valid;
 
 @Service
 public class PedidoService {
-
+	
+	@Autowired
+	private EmailService email;
+	
 	@Autowired
 	private PedidoRepository pedidoRepo;
 	
@@ -73,8 +76,8 @@ public class PedidoService {
             pedidoEntity.setStatus(pedidoDto.status());
             pedidoEntity.setValorTotal(pedidoDto.valorTotal());
             pedidoEntity.setCliente(clienteOpt.get());
-
             pedidoRepo.save(pedidoEntity);
+            email.envioEmail(pedidoId);
             return Optional.of(PedidoDto.toDto(pedidoEntity));
 		}
 	        return Optional.empty();
@@ -86,30 +89,27 @@ public class PedidoService {
 		if (pedidoEntity.isEmpty()) {
 			return false;
 		}
-<<<<<<< HEAD
+
 //		pedidoEntity.get().getItensPedido().clear();
-=======
-		//pedidoEntity.get().getItensPedido().clear();
->>>>>>> 9fe07de40bc7cc6d9a22904a96b1650163fe0a7a
 		pedidoRepo.save(pedidoEntity.get());
 		pedidoRepo.excluirPedido(id);
 		return true;
 	}
 
-	  public List<PedidoRelatorioDto> buscarRelatorioPedidos() {
-	        List<Pedido> pedidos = pedidoRepo.findAll();
-
-	        return pedidos.stream()
-	                .map(pedido -> {
-	                    PedidoDto pedidoDto = PedidoDto.toDto(pedido);
-	                    List<ItemPedidoDto> itensPedidoDto = itemPedidoRepo.findById(pedido.getId())
-	                            .stream()
-	                            .map(ItemPedidoDto::toDto)
-	                            .collect(Collectors.toList());
-	                    return pedidoDto.toRelatorio(itensPedidoDto);
-	                })
-	                .collect(Collectors.toList());
+	public PedidoRelatorioDto buscarRelatorioPedido(Long id) {
+	    Optional<Pedido> pedidoOptional = pedidoRepo.findById(id);
+	    if (pedidoOptional.isPresent()) {
+	        Pedido pedido = pedidoOptional.get();
+	        List<ItemPedidoDto> itensPedidoDto = itemPedidoRepo.findById(pedido.getId())
+                    .stream()
+                    .map(ItemPedidoDto::toDto)
+                    .collect(Collectors.toList());
+	        PedidoDto pedidoDto = PedidoDto.toDto(pedido);
+	        return pedidoDto.toRelatorio(itensPedidoDto);
+	    } else {
+	    	return null;
 	    }
+	}
 	  }
 	
 

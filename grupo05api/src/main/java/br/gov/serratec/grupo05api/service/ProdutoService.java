@@ -80,10 +80,7 @@ public class ProdutoService {
         return produtos.stream()
                 .map(ProdutoDto::toDto)
                 .collect(Collectors.toList());
-<<<<<<< HEAD
 
-=======
->>>>>>> 9fe07de40bc7cc6d9a22904a96b1650163fe0a7a
     }
   
     public List<ProdutoDto> listarTodos() {

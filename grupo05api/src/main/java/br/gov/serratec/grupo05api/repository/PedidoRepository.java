@@ -1,5 +1,7 @@
 package br.gov.serratec.grupo05api.repository;
 
+
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,5 +26,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 	@Transactional
 	@Query("UPDATE Pedido p SET p.valorTotal = :valorTotal WHERE p.id = :idPedido")
 	void atualizarValorTotalPedido(@Param("idPedido") Long idPedido, @Param("valorTotal") Double valorTotal);
+	
 	
 }

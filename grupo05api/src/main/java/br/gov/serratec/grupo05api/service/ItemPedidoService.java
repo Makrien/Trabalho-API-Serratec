@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import br.gov.serratec.grupo05api.dto.ItemPedidoCadastroDto;
 import br.gov.serratec.grupo05api.dto.ItemPedidoDto;
 import br.gov.serratec.grupo05api.model.ItemPedido;
@@ -20,6 +21,12 @@ import br.gov.serratec.grupo05api.repository.ProdutoRepository;
 
 @Service
 public class ItemPedidoService {
+	
+	@Autowired
+	private PedidoService pedidoService;
+	
+	@Autowired
+	private EmailService email;
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepo;
@@ -48,6 +55,7 @@ public class ItemPedidoService {
         ItemPedido itemPedidoEntity = itemPedidoRepo.save(itemPedido);
         Double totalValorLiquido = pedidoRepo.calcularTotalValorLiquido(itemPedido.getPedido().getId());
         pedidoRepo.atualizarValorTotalPedido(itemPedido.getPedido().getId(), totalValorLiquido);
+
         return ItemPedidoDto.toDto(itemPedidoEntity);
     }
 
@@ -67,10 +75,7 @@ public class ItemPedidoService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Item de Pedido não encontrado"));
 
             itemPedidoEntity.setQuantidade(itemPedidoDto.quantidade());
-//            itemPedidoEntity.setPrecoVenda(itemPedidoDto.precoVenda());
             itemPedidoEntity.setPercentualDesconto(itemPedidoDto.percentualDesconto());
-//            itemPedidoEntity.setValorBruto(itemPedidoDto.valorBruto());
-//            itemPedidoEntity.setValorLiquido(itemPedidoDto.valorLiquido());
             itemPedidoEntity.setProduto(produtoOpt.get());
             itemPedidoEntity.setPedido(pedidoOpt.get());
 
@@ -96,4 +101,6 @@ public class ItemPedidoService {
             .map(ItemPedidoDto::toDto)
             .collect(Collectors.toList());
     }
+    
+ 
 }
