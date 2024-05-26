@@ -3,9 +3,9 @@ package br.gov.serratec.grupo05api.model;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.gov.serratec.grupo05api.config.Mapper;
 import br.gov.serratec.grupo05api.dto.ClienteDto;
 import br.gov.serratec.grupo05api.dto.ClienteEnderecoDto;
 import jakarta.persistence.CascadeType;
@@ -28,7 +28,6 @@ public class Cliente {
 	private String nomeCompleto;
 	private String cpf;
 	private String telefone;
-	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataNascimento;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -138,12 +137,11 @@ public class Cliente {
 	}
 
 
-	public ClienteEnderecoDto enderecoToDto(Cliente cliente) {
-		return new ClienteEnderecoDto(cliente.id, cliente.email, cliente.nomeCompleto,
-				cliente.cpf, cliente.telefone, cliente.dataNascimento, cliente.endereco.getId());
+	public static ClienteEnderecoDto enderecoToDto(Cliente clienteEntity) {
+		return Mapper.getMapper().convertValue(clienteEntity, ClienteEnderecoDto.class);
 	}
-	public static  ClienteDto toDto(Cliente cliente) {
-		return new ClienteDto(cliente.id, cliente.email, cliente.nomeCompleto,
-				cliente.cpf, cliente.telefone, cliente.dataNascimento, cliente.endereco);
+	public static ClienteDto toDto(Cliente clienteEntity) {
+		return Mapper.getMapper().convertValue(clienteEntity, ClienteDto.class);
 	}
+	
 }

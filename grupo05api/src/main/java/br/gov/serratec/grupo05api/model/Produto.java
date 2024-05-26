@@ -1,8 +1,6 @@
 package br.gov.serratec.grupo05api.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,8 +28,10 @@ public class Produto {
 	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
 	
-	@OneToMany(mappedBy = "produto")
-	private List<ItemPedido> itemPedido = new ArrayList<>();
+
+//	@OneToMany(mappedBy = "produto")
+//	private List<ItemPedido> itemPedido = new ArrayList<>();
+
 	
 
 	public Produto() {
@@ -50,9 +49,8 @@ public class Produto {
 		this.valorUnitario = valorUnitario;
 		this.imagem = imagem;
 		this.categoria = categoria;
-		this.itemPedido = new ArrayList<>();
+//		this.itemPedido = new ArrayList<>();
 	}
-
 	public Long getId() {
 		return id;
 	}
@@ -109,13 +107,15 @@ public class Produto {
 		this.imagem = imagem;
 	}
 
-	public List<ItemPedido> getItemPedido() {
-		return itemPedido;
-	}
+//	public List<ItemPedido> getItemPedido() {
 
-	public void setItemPedido(List<ItemPedido> itemPedido) {
-		this.itemPedido = itemPedido;
-	}
+//		return itemPedido;
+//	}
+//
+//	public void setItemPedido(List<ItemPedido> itemPedido) {
+//		this.itemPedido = itemPedido;
+//	}
+
 
 	public Categoria getCategoria() {
 		return categoria;

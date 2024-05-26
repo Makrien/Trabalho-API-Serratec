@@ -12,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,8 +31,9 @@ public class Pedido {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-	List<ItemPedido> itensPedido;
+
+	//@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+	//List<ItemPedido> itensPedido;
 
 	public Pedido() {}
 
@@ -47,7 +47,7 @@ public class Pedido {
 		this.status = status;
 		this.valorTotal = valorTotal;
 		this.cliente = cliente;
-		this.itensPedido = itensPedido;
+		//this.itensPedido = itensPedido;
 	}
 
 	public Long getId() {
@@ -106,11 +106,13 @@ public class Pedido {
 		this.cliente = cliente;
 	}
 
-	public List<ItemPedido> getItensPedido() {
-		return itensPedido;
-	}
 
-	public void setItensPedido(List<ItemPedido> itensPedido) {
-		this.itensPedido = itensPedido;
-	}
+//	public List<ItemPedido> getItensPedido() {
+//		return itensPedido;
+//	}
+//
+//	public void setItensPedido(List<ItemPedido> itensPedido) {
+//		this.itensPedido = itensPedido;
+//	}
+
 }

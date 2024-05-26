@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import br.gov.serratec.grupo05api.dto.ItemPedidoCadastroDto;
 import br.gov.serratec.grupo05api.dto.ItemPedidoDto;
 import br.gov.serratec.grupo05api.model.ItemPedido;
@@ -20,6 +21,7 @@ import br.gov.serratec.grupo05api.repository.ProdutoRepository;
 
 @Service
 public class ItemPedidoService {
+	
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepo;
@@ -32,6 +34,10 @@ public class ItemPedidoService {
 
     public ItemPedidoDto cadastrar(ItemPedidoCadastroDto novoItemPedido) {
         Optional<Produto> produtoOpt = produtoRepo.findById(novoItemPedido.idProduto());
+        if(itemPedidoRepo.existeProduto(novoItemPedido.idPedido(), novoItemPedido.idProduto())) {
+        	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto já cadastrado no pedido");
+        }
+        
         if (produtoOpt.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto não cadastrado");
         }
@@ -42,7 +48,13 @@ public class ItemPedidoService {
         }
 
         ItemPedido itemPedido = novoItemPedido.toEntity(produtoOpt.get(), pedidoOpt.get());
+        itemPedido.setPrecoVenda(produtoOpt.get().getValorUnitario());
+        itemPedido.setValorBruto(produtoOpt.get().getValorUnitario());
+        itemPedido.setValorLiquido(itemPedido.getPercentualDesconto());
         ItemPedido itemPedidoEntity = itemPedidoRepo.save(itemPedido);
+        Double totalValorLiquido = pedidoRepo.calcularTotalValorLiquido(itemPedido.getPedido().getId());
+        pedidoRepo.atualizarValorTotalPedido(itemPedido.getPedido().getId(), totalValorLiquido);
+
         return ItemPedidoDto.toDto(itemPedidoEntity);
     }
 
@@ -62,13 +74,9 @@ public class ItemPedidoService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Item de Pedido não encontrado"));
 
             itemPedidoEntity.setQuantidade(itemPedidoDto.quantidade());
-            itemPedidoEntity.setPrecoVenda(itemPedidoDto.precoVenda());
             itemPedidoEntity.setPercentualDesconto(itemPedidoDto.percentualDesconto());
-            itemPedidoEntity.setValorBruto(itemPedidoDto.valorBruto());
-            itemPedidoEntity.setValorLiquido(itemPedidoDto.valorLiquido());
             itemPedidoEntity.setProduto(produtoOpt.get());
             itemPedidoEntity.setPedido(pedidoOpt.get());
-
             itemPedidoRepo.save(itemPedidoEntity);
             return Optional.of(ItemPedidoDto.toDto(itemPedidoEntity));
         }
@@ -91,4 +99,6 @@ public class ItemPedidoService {
             .map(ItemPedidoDto::toDto)
             .collect(Collectors.toList());
     }
+    
+ 
 }

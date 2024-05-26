@@ -85,8 +85,8 @@ public class ItemPedido {
 		return valorBruto;
 	}
 
-	public void setValorBruto(Double valorBruto) {
-		this.valorBruto = valorBruto;
+	public void setValorBruto(Double valorUnitario) {
+		this.valorBruto = valorUnitario * getQuantidade();
 	}
 
 	public Double getValorLiquido() {
@@ -94,7 +94,7 @@ public class ItemPedido {
 	}
 
 	public void setValorLiquido(Double valorLiquido) {
-		this.valorLiquido = valorLiquido;
+		this.valorLiquido = getValorBruto() * ( 1 - (valorLiquido/100));
 	}
 
 	public Produto getProduto() {

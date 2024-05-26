@@ -1,5 +1,6 @@
 package br.gov.serratec.grupo05api.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -28,4 +29,5 @@ public class EmailService {
 			return "Erro ao enviar e-mail" + e.getLocalizedMessage();
 		}
 	}
+	   
 }

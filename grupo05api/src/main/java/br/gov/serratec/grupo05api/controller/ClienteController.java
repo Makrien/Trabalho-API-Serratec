@@ -1,9 +1,9 @@
 package br.gov.serratec.grupo05api.controller;
 
-import java.util.List;
 
 import br.gov.serratec.grupo05api.dto.ClienteDto;
 import br.gov.serratec.grupo05api.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.serratec.grupo05api.dto.ClienteEnderecoDto;
 import br.gov.serratec.grupo05api.model.Cliente;
-import br.gov.serratec.grupo05api.service.ClienteService;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/clientes")
@@ -32,13 +30,15 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    
+    
     @GetMapping
     public ResponseEntity<Page<Cliente>> buscarTodosClientes(@PageableDefault(size = 2, page = 0, sort = "nomeCompleto", 
 			direction = Sort.Direction.ASC)Pageable pageable) {
         Page<Cliente> clientes = clienteService.buscarTodos(pageable);
         return ResponseEntity.ok(clientes);
     }
-
+    @Operation(description="Endpoint para buscar cliente por ID")
     @GetMapping("/{id}")
     public ResponseEntity<ClienteDto> buscarClientePorId(@PathVariable Long id) {
         ClienteDto clienteDto = clienteService.buscarPorId(id);
@@ -47,7 +47,7 @@ public class ClienteController {
         }
         return ResponseEntity.ok(clienteDto);
     }
-
+    @Operation(description="Endpoint para cadastrar cliente")
     @PostMapping
     public ResponseEntity<?> criarCliente(@Valid @RequestBody ClienteEnderecoDto clienteDto) {
     	ClienteDto clienteCriado = clienteService.criar(clienteDto);

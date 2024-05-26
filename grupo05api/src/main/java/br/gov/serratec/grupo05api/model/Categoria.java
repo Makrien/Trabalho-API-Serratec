@@ -1,14 +1,11 @@
 package br.gov.serratec.grupo05api.model;
 
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,20 +18,23 @@ public class Categoria {
 	private String nome;
 	private String descricao;
 	
+
+
 //	@OneToMany(mappedBy = "categoria")
 //	private List<Produto> produto;
 
-	
 	public Categoria() {
 		super();
 	}
 
-	public Categoria(Long id, String nome, String descricao, List<Produto> produto) {
+	public Categoria(Long id, String nome, String descricao) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
-//		this.produto = produto;
+
+		//this.produto = produto;
+
 	}
 
 	public Long getId() {
@@ -60,6 +60,9 @@ public class Categoria {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+
+
+	
 //
 //	public List<Produto> getProduto() {
 //		return produto;
@@ -68,6 +71,7 @@ public class Categoria {
 //	public void setProduto(List<Produto> produto) {
 //		this.produto = produto;
 //	}
+
 	
 	
 	

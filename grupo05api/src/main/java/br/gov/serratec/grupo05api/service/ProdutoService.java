@@ -2,7 +2,9 @@ package br.gov.serratec.grupo05api.service;
 
 import java.util.List;
 import java.util.Optional;
+
 import java.util.stream.Collectors;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,12 +73,21 @@ public class ProdutoService {
     public Optional<ProdutoDto> buscarPorId(Long id) {
         return produtoRepo.findById(id).map(ProdutoDto::toDto);
     }
+
     
     public List<ProdutoDto> buscarPorNomeProduto(String nome) {
         List<Produto> produtos = produtoRepo.findByNomeContainingIgnoreCase(nome);
         return produtos.stream()
                 .map(ProdutoDto::toDto)
                 .collect(Collectors.toList());
+
+    }
+  
+    public List<ProdutoDto> listarTodos() {
+        return produtoRepo.findAll().stream()
+            .map(ProdutoDto::toDto)
+            .collect(Collectors.toList());
+
     }
    
 }
