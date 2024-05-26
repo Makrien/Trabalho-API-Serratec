@@ -14,5 +14,4 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 	@Transactional
 	@Query("delete from Pedido p where p.id = :idPedido")
 	void excluirPedido(@Param("idPedido") Long idPedido);
-
 }
