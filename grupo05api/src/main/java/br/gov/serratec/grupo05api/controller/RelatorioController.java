@@ -18,7 +18,7 @@ public class RelatorioController {
     private PedidoService pedidoService;
 
     @GetMapping("/{id}")
-    public PedidoRelatorioDto getRelatorioPedidos(@PathVariable Long id) {
+    public String getRelatorioPedidos(@PathVariable Long id) {
         return pedidoService.buscarRelatorioPedido(id);
     }
 }

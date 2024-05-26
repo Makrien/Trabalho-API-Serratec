@@ -14,6 +14,7 @@ import br.gov.serratec.grupo05api.dto.PedidoCadastroDto;
 import br.gov.serratec.grupo05api.dto.PedidoDto;
 import br.gov.serratec.grupo05api.dto.PedidoRelatorioDto;
 import br.gov.serratec.grupo05api.model.Cliente;
+import br.gov.serratec.grupo05api.model.ItemPedido;
 import br.gov.serratec.grupo05api.model.Pedido;
 import br.gov.serratec.grupo05api.repository.ClienteRepository;
 import br.gov.serratec.grupo05api.repository.ItemPedidoRepository;
@@ -74,10 +75,10 @@ public class PedidoService {
             pedidoEntity.setDataEntrega(pedidoDto.dataEntrega());
             pedidoEntity.setDataEnvio(pedidoDto.dataEnvio());
             pedidoEntity.setStatus(pedidoDto.status());
-            pedidoEntity.setValorTotal(pedidoDto.valorTotal());
+            Double totalValorLiquido = pedidoRepo.calcularTotalValorLiquido(pedidoId);
+            pedidoEntity.setValorTotal(totalValorLiquido);
             pedidoEntity.setCliente(clienteOpt.get());
             pedidoRepo.save(pedidoEntity);
-            email.envioEmail(pedidoId);
             return Optional.of(PedidoDto.toDto(pedidoEntity));
 		}
 	        return Optional.empty();
@@ -96,17 +97,51 @@ public class PedidoService {
 		return true;
 	}
 
-	public PedidoRelatorioDto buscarRelatorioPedido(Long id) {
+	public String buscarRelatorioPedido(Long id) {
 	    Optional<Pedido> pedidoOptional = pedidoRepo.findById(id);
 	    if (pedidoOptional.isPresent()) {
 	        Pedido pedido = pedidoOptional.get();
-	        List<ItemPedidoDto> itensPedidoDto = itemPedidoRepo.findById(pedido.getId())
+	        List<ItemPedidoDto> itens = itemPedidoRepo.findByItemIdPedido(pedido.getId())
                     .stream()
                     .map(ItemPedidoDto::toDto)
                     .collect(Collectors.toList());
 	        PedidoDto pedidoDto = PedidoDto.toDto(pedido);
-	        email.envioEmail(id);
-	        return pedidoDto.toRelatorio(itensPedidoDto);
+			StringBuilder itensPedidoString = new StringBuilder();
+			for (ItemPedidoDto item : itens) {
+				try {
+					String pedidoString = 
+										 "Código: " + item.produto().getId() + "\n"
+										+"Produto: " + item.produto().getNome() +"\n"
+										+"Imagem:  " + item.produto().getImagem()+"\n"
+										+"Descrição: " + item.produto().getDescricao() +"\n"
+										+"Valor Unitário: " + item.precoVenda() + "\n"
+										+"Quantidade: " + item.quantidade() + "\n"
+										+"Valor Bruto: " +item.valorBruto()+ "\n"
+										+"Percentual Desconto: " + item.percentualDesconto()+"%"
+										+"\nValor Líquido: R$" + item.valorLiquido() +"\n"
+										+"----------------------------------------------";
+											
+					itensPedidoString.append(pedidoString).append("\n");
+				} catch (Exception e) {
+					e.printStackTrace();
+					
+				}
+			}
+
+
+			String emailBody = "Olá,"+pedidoDto.cliente().getNomeCompleto()+"\n\n" + "Segue abaixo o relatório do pedido:\n\n" 
+								+ "ID do Pedido: "+ pedidoDto.id() + "\n"
+								+ "Data do Pedido: " +pedidoDto.dataPedido() + "\n"
+								+ "Valor Total: "+ pedidoDto.valorTotal() + "\n" 
+								+ "Itens do pedido:\n" + itensPedidoString.toString() + "\n\n" 
+								+ "Atenciosamente,\n"
+								+ "Equipe de Suporte";
+			
+	        email.enviarEmail(pedidoDto.cliente().getEmail(), "Relatorio do pedido realizado", emailBody);
+	        
+	        
+	        
+	        return emailBody;
 	    } else {
 	    	return null;
 	    }

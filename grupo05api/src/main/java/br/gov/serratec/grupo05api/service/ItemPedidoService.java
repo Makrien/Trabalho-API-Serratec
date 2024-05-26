@@ -22,11 +22,6 @@ import br.gov.serratec.grupo05api.repository.ProdutoRepository;
 @Service
 public class ItemPedidoService {
 	
-	@Autowired
-	private PedidoService pedidoService;
-	
-	@Autowired
-	private EmailService email;
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepo;
@@ -39,6 +34,9 @@ public class ItemPedidoService {
 
     public ItemPedidoDto cadastrar(ItemPedidoCadastroDto novoItemPedido) {
         Optional<Produto> produtoOpt = produtoRepo.findById(novoItemPedido.idProduto());
+        if(itemPedidoRepo.existeProduto(novoItemPedido.idPedido(), novoItemPedido.idProduto())) {
+        	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto já cadastrado no pedido");
+        }
         if (produtoOpt.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto não cadastrado");
         }
@@ -78,7 +76,6 @@ public class ItemPedidoService {
             itemPedidoEntity.setPercentualDesconto(itemPedidoDto.percentualDesconto());
             itemPedidoEntity.setProduto(produtoOpt.get());
             itemPedidoEntity.setPedido(pedidoOpt.get());
-
             itemPedidoRepo.save(itemPedidoEntity);
             return Optional.of(ItemPedidoDto.toDto(itemPedidoEntity));
         }
