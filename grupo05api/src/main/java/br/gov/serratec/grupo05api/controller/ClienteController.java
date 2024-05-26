@@ -5,8 +5,11 @@ import java.util.List;
 import br.gov.serratec.grupo05api.dto.ClienteDto;
 import br.gov.serratec.grupo05api.service.ClienteService;
 import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.serratec.grupo05api.dto.ClienteEnderecoDto;
+import br.gov.serratec.grupo05api.model.Cliente;
+import br.gov.serratec.grupo05api.service.ClienteService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/clientes")
@@ -27,8 +33,9 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<ClienteDto>> buscarTodosClientes() {
-        List<ClienteDto> clientes = clienteService.buscarTodos();
+    public ResponseEntity<Page<Cliente>> buscarTodosClientes(@PageableDefault(size = 2, page = 0, sort = "nomeCompleto", 
+			direction = Sort.Direction.ASC)Pageable pageable) {
+        Page<Cliente> clientes = clienteService.buscarTodos(pageable);
         return ResponseEntity.ok(clientes);
     }
 
@@ -51,7 +58,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id, @Valid @RequestBody ClienteDto clienteDto) {
+    public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id, @Valid @RequestBody ClienteEnderecoDto clienteDto) {
         ClienteDto clienteAtualizado = clienteService.atualizar(id, clienteDto);
         if (clienteAtualizado == null) {
             return ResponseEntity.notFound().build();
