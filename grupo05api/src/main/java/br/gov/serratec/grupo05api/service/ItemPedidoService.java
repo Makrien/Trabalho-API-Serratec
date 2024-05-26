@@ -46,6 +46,8 @@ public class ItemPedidoService {
         itemPedido.setValorBruto(produtoOpt.get().getValorUnitario());
         itemPedido.setValorLiquido(itemPedido.getPercentualDesconto());
         ItemPedido itemPedidoEntity = itemPedidoRepo.save(itemPedido);
+        Double totalValorLiquido = pedidoRepo.calcularTotalValorLiquido(itemPedido.getPedido().getId());
+        pedidoRepo.atualizarValorTotalPedido(itemPedido.getPedido().getId(), totalValorLiquido);
         return ItemPedidoDto.toDto(itemPedidoEntity);
     }
 

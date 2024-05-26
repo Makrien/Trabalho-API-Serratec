@@ -6,4 +6,6 @@ import br.gov.serratec.grupo05api.model.ItemPedido;
 
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, Long>{
 
+	
+	
 }
