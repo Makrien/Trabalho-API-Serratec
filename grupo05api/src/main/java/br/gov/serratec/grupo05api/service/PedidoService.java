@@ -105,6 +105,7 @@ public class PedidoService {
                     .map(ItemPedidoDto::toDto)
                     .collect(Collectors.toList());
 	        PedidoDto pedidoDto = PedidoDto.toDto(pedido);
+	        email.envioEmail(id);
 	        return pedidoDto.toRelatorio(itensPedidoDto);
 	    } else {
 	    	return null;
