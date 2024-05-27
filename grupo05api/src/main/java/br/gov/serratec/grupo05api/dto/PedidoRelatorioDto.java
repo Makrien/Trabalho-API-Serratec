@@ -9,7 +9,6 @@ import br.gov.serratec.grupo05api.config.Mapper;
 import br.gov.serratec.grupo05api.model.Cliente;
 import br.gov.serratec.grupo05api.model.Pedido;
 
-
 @JsonIgnoreProperties(ignoreUnknown=true)
 public record PedidoRelatorioDto(
 		Long idPedido,

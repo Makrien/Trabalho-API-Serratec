@@ -28,12 +28,10 @@ public class Cliente {
 	private String nomeCompleto;
 	private String cpf;
 	private String telefone;
-	private LocalDate dataNascimento;
-	
+	private LocalDate dataNascimento;	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_id")
-	private Endereco endereco;
-	
+	private Endereco endereco;	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos;
@@ -41,9 +39,8 @@ public class Cliente {
 	public Cliente() {
 		super();
 	}
-
 	
-	 public Cliente(Long id, String email, String nomeCompleto, String cpf, String telefone, LocalDate dataNascimento,
+	public Cliente(Long id, String email, String nomeCompleto, String cpf, String telefone, LocalDate dataNascimento,
 			Endereco endereco, List<Pedido> pedidos) {
 		super();
 		this.id = id;
@@ -55,91 +52,75 @@ public class Cliente {
 		this.endereco = endereco;
 		this.pedidos = pedidos;
 	}
-
-
+	
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
 	public String getEmail() {
 		return email;
 	}
-
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-
 	public String getNomeCompleto() {
 		return nomeCompleto;
 	}
-
 
 	public void setNomeCompleto(String nomeCompleto) {
 		this.nomeCompleto = nomeCompleto;
 	}
 
-
 	public String getCpf() {
 		return cpf;
 	}
-
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
-
 	public String getTelefone() {
 		return telefone;
 	}
-
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
 
-
 	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
-
 
 	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
-
 	public Endereco getEndereco() {
 		return endereco;
 	}
-
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
 
-
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
-
 
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
 
-
 	public static ClienteEnderecoDto enderecoToDto(Cliente clienteEntity) {
 		return Mapper.getMapper().convertValue(clienteEntity, ClienteEnderecoDto.class);
 	}
+	
 	public static ClienteDto toDto(Cliente clienteEntity) {
 		return Mapper.getMapper().convertValue(clienteEntity, ClienteDto.class);
 	}

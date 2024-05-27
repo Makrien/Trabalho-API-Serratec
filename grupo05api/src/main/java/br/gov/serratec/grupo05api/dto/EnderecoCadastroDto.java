@@ -9,6 +9,4 @@ public record EnderecoCadastroDto(
 		String cep,
 		int numero,
 		String complemento
-	) {
-
-}
+	) {}

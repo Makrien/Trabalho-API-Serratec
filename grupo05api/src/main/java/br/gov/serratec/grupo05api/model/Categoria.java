@@ -1,7 +1,5 @@
 package br.gov.serratec.grupo05api.model;
 
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,11 +15,6 @@ public class Categoria {
 	private Long id;
 	private String nome;
 	private String descricao;
-	
-
-
-//	@OneToMany(mappedBy = "categoria")
-//	private List<Produto> produto;
 
 	public Categoria() {
 		super();
@@ -32,9 +25,6 @@ public class Categoria {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
-
-		//this.produto = produto;
-
 	}
 
 	public Long getId() {
@@ -60,19 +50,4 @@ public class Categoria {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
-
-	
-//
-//	public List<Produto> getProduto() {
-//		return produto;
-//	}
-//
-//	public void setProduto(List<Produto> produto) {
-//		this.produto = produto;
-//	}
-
-	
-	
-	
 }

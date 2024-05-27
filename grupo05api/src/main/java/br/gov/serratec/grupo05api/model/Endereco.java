@@ -20,8 +20,7 @@ public class Endereco {
 	private int numero;
 	private String complemento;
 	private String uf;
-	
-	
+		
 	public Endereco() {}
 	
 	public Endereco(Long id, String cep, String rua, String bairro, String cidade, int numero, String complemento,

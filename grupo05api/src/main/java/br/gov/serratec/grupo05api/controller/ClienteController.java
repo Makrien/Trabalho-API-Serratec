@@ -29,8 +29,6 @@ public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
-
-    
     
     @GetMapping
     public ResponseEntity<Page<Cliente>> buscarTodosClientes(@PageableDefault(size = 2, page = 0, sort = "nomeCompleto", 

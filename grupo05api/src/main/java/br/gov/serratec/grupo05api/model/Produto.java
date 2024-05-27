@@ -23,17 +23,9 @@ public class Produto {
 	private LocalDate dataCadastro;
 	private Double valorUnitario;
 	private String imagem;
-	
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
-	
-
-//	@OneToMany(mappedBy = "produto")
-//	private List<ItemPedido> itemPedido = new ArrayList<>();
-
-	
-
 	public Produto() {
 		super();
 	}
@@ -49,7 +41,6 @@ public class Produto {
 		this.valorUnitario = valorUnitario;
 		this.imagem = imagem;
 		this.categoria = categoria;
-//		this.itemPedido = new ArrayList<>();
 	}
 	public Long getId() {
 		return id;
@@ -106,17 +97,7 @@ public class Produto {
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
 	}
-
-//	public List<ItemPedido> getItemPedido() {
-
-//		return itemPedido;
-//	}
-//
-//	public void setItemPedido(List<ItemPedido> itemPedido) {
-//		this.itemPedido = itemPedido;
-//	}
-
-
+	
 	public Categoria getCategoria() {
 		return categoria;
 	}
@@ -124,5 +105,4 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-	
 }
