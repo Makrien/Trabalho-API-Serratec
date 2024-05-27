@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import br.gov.serratec.grupo05api.model.ItemPedido;
 import br.gov.serratec.grupo05api.model.Pedido;
 import br.gov.serratec.grupo05api.model.Produto;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ItemPedidoCadastroDto(
 			Long id,

@@ -31,10 +31,6 @@ public class Pedido {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-
-	//@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-	//List<ItemPedido> itensPedido;
-
 	public Pedido() {}
 
 	public Pedido(Long id, LocalDate dataPedido, LocalDate dataEntrega, LocalDate dataEnvio, String status,
@@ -47,7 +43,6 @@ public class Pedido {
 		this.status = status;
 		this.valorTotal = valorTotal;
 		this.cliente = cliente;
-		//this.itensPedido = itensPedido;
 	}
 
 	public Long getId() {
@@ -105,14 +100,4 @@ public class Pedido {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-
-
-//	public List<ItemPedido> getItensPedido() {
-//		return itensPedido;
-//	}
-//
-//	public void setItensPedido(List<ItemPedido> itensPedido) {
-//		this.itensPedido = itensPedido;
-//	}
-
 }

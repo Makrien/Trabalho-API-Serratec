@@ -93,8 +93,7 @@ public class PedidoService {
 		if (pedidoEntity.isEmpty()) {
 			return false;
 		}
-
-//		pedidoEntity.get().getItensPedido().clear();
+		itemPedidoRepo.deleteByItemIdPedido(id);
 		pedidoRepo.save(pedidoEntity.get());
 		pedidoRepo.excluirPedido(id);
 		return true;

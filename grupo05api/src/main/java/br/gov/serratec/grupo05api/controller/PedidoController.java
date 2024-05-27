@@ -28,13 +28,11 @@ public class PedidoController {
 	@Autowired
 	private PedidoService servico;
 	
-	//TODO: Check exceptions
 	@GetMapping
 	public ResponseEntity<List<PedidoDto>> obterTodos() {
 		return new ResponseEntity<>(servico.obterTodos(), HttpStatus.OK);
 	}
 	
-	//TODO
 	@GetMapping("/{id}")
 	public ResponseEntity<PedidoDto> obterPorId(@PathVariable Long id) {
 		Optional<PedidoDto> pedidoDto = servico.obterPorId(id);
@@ -44,19 +42,11 @@ public class PedidoController {
 		return new ResponseEntity<>(pedidoDto.get(), HttpStatus.FOUND);
 	}
 	
-	//TODO
-//	@GetMapping
-//	public ResponseEntity<List<RelatorioDto>> obterRelatorio() {
-//		return null;
-//	}
-	
-	//TODO: Check exceptions
 	@PostMapping
 	public ResponseEntity<PedidoDto> cadastrar(@RequestBody @Valid PedidoCadastroDto novoPedido) {
 		return new ResponseEntity<>(servico.cadastrar(novoPedido), HttpStatus.CREATED);
 	}
 	
-	//TODO: Check exceptions
 	@PutMapping("/{id}")
 	public ResponseEntity<PedidoDto> atualizar(@PathVariable Long id, @RequestBody @Valid PedidoCadastroDto pedido) {
 		Optional<PedidoDto> pedidoDto = servico.atualizar(id, pedido);
@@ -67,7 +57,6 @@ public class PedidoController {
 		return ResponseEntity.ok(pedidoDto.get());
 	}
 	
-	//TODO: Check exceptions
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> excluir(@PathVariable Long id) {
 		if (servico.excluir(id)) {

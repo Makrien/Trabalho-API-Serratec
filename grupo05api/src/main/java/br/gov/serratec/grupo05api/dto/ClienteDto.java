@@ -10,8 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import br.gov.serratec.grupo05api.model.Cliente;
 import br.gov.serratec.grupo05api.model.Endereco;
 
-
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ClienteDto(
         Long id,

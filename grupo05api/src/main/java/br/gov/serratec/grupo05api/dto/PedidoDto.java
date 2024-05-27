@@ -33,13 +33,11 @@ public record PedidoDto(Long id,
   public PedidoRelatorioDto toRelatorio(List<ItemPedidoDto> itensPedido) {
 		
 		List<ItemRelatorioDto> itensRelatorio = new ArrayList<>();
-		
-		
+				
 		itensPedido.forEach(i -> {
 			itensRelatorio.add(i.toItemRelatorio());
 		});
-		
-		  
+				  
 		return new PedidoRelatorioDto(
 				this.id,
 				this.cliente,

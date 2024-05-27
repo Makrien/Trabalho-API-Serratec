@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Pattern;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import br.gov.serratec.grupo05api.model.Cliente;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ClienteEnderecoDto(
         Long id,
